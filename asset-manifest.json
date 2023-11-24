@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/patchwork-calculator/static/css/main.f855e6bc.css",
+    "main.js": "/patchwork-calculator/static/js/main.bf8e6437.js",
+    "static/js/787.1b46708b.chunk.js": "/patchwork-calculator/static/js/787.1b46708b.chunk.js",
+    "index.html": "/patchwork-calculator/index.html",
+    "main.f855e6bc.css.map": "/patchwork-calculator/static/css/main.f855e6bc.css.map",
+    "main.bf8e6437.js.map": "/patchwork-calculator/static/js/main.bf8e6437.js.map",
+    "787.1b46708b.chunk.js.map": "/patchwork-calculator/static/js/787.1b46708b.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.f855e6bc.css",
+    "static/js/main.bf8e6437.js"
+  ]
+}
