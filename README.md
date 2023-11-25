@@ -6,4 +6,5 @@ https://patchwork.kumackey.com/
 
 ```bash
 npm run deploy
+rm -rf build/
 ```
