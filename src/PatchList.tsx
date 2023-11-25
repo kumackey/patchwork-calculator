@@ -1,19 +1,37 @@
-import React from 'react';
+import React, {useCallback} from 'react';
 import {Patch, Patches} from './Patch';
 import {CSSProperties} from 'react';
+import {useDrag, useDrop} from 'react-dnd';
+
+const PatchType = 'patch';
 
 interface PatchListProps {
+    patches: Patch[];
     remaining_income_times: number;
+    setPatches: (patches: Patch[]) => void;
 }
 
-export function PatchList({remaining_income_times}: PatchListProps) {
+export function PatchList({remaining_income_times, patches, setPatches}: PatchListProps) {
+    const movePatch = useCallback((dragIndex: number, hoverIndex: number) => {
+        const dragPatch = patches[dragIndex];
+        const newPatches = [...patches];
+        newPatches.splice(dragIndex, 1);
+        newPatches.splice(hoverIndex, 0, dragPatch);
+        setPatches(newPatches);
+    }, [patches, setPatches]);
+
+
     return (
         <div style={styles.container}>
-            {Patches.map((patch: Patch) => {
-                return (
-                    <PatchContainer key={patch.name()} patch={patch} remaining_income_times={remaining_income_times}/>
-                );
-            })}
+            {patches.map((patch, index) => (
+                <PatchContainer
+                    key={patch.name()}
+                    patch={patch}
+                    remaining_income_times={remaining_income_times}
+                    index={index}
+                    movePatch={movePatch}
+                />
+            ))}
         </div>
     );
 }
@@ -21,12 +39,29 @@ export function PatchList({remaining_income_times}: PatchListProps) {
 interface PatchContainerProps {
     patch: Patch;
     remaining_income_times: number;
+    index: number;
+    movePatch: (from: number, to: number) => void;
 }
 
-function PatchContainer({patch, remaining_income_times}: PatchContainerProps) {
+function PatchContainer({patch, remaining_income_times, index, movePatch}: PatchContainerProps) {
+    const [, dragRef] = useDrag({
+        type: PatchType,
+        item: {type: PatchType, index},
+    });
+
+    const [, dropRef] = useDrop({
+        accept: PatchType,
+        hover(item: { type: string; index: number }, monitor) {
+            if (item.index !== index) {
+                movePatch(item.index, index);
+                item.index = index;
+            }
+        },
+    });
+
     const patchName = patch.name();
     return (
-        <div style={styles.patch}>
+        <div ref={(node) => dragRef(dropRef(node))} style={styles.patch}>
             <p><b>name: {patchName}</b></p>
             {/*<p>button cost: {patch.buttonCost}, time cost: {patch.timeCost}</p>*/}
             <p>total score: {patch.totalScores(remaining_income_times)}</p>
