@@ -6,10 +6,6 @@ interface PatchListProps {
     remaining_income_times: number;
 }
 
-function floor(n: number): number {
-    return Math.floor(n * 100) / 100
-}
-
 export function PatchList({remaining_income_times}: PatchListProps) {
     return (
         <div style={styles.container}>
@@ -34,11 +30,15 @@ function PatchContainer({patch, remaining_income_times}: PatchContainerProps) {
             <p><b>name: {patchName}</b></p>
             {/*<p>button cost: {patch.buttonCost}, time cost: {patch.timeCost}</p>*/}
             <p>total score: {patch.totalScores(remaining_income_times)}</p>
-            <p>button rate: {Math.floor(patch.buttonRate(remaining_income_times))}</p>
-            <p>time rate: {Math.floor(patch.timeRate(remaining_income_times))}</p>
+            <p>button rate: {floor(patch.buttonRate(remaining_income_times))}</p>
+            <p>time rate: {floor(patch.timeRate(remaining_income_times))}</p>
             <img src={patch.image} alt={patchName} style={styles.image}/>
         </div>
     );
+}
+
+function floor(n: number): number {
+    return Math.floor(n * 100) / 100
 }
 
 const styles: { [key: string]: CSSProperties } = {
