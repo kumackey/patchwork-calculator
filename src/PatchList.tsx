@@ -67,7 +67,7 @@ function PatchContainer({patch, remaining_income_times, index, movePatch}: Patch
             <p>total score: {patch.totalScores(remaining_income_times)}</p>
             <p>button rate: {floor(patch.buttonRate(remaining_income_times))}</p>
             <p>time rate: {floor(patch.timeRate(remaining_income_times))}</p>
-            <PatchSVG shape={patch.shape}/>
+            <PatchSVG shape={patch.shape} buttons={patch.buttonsEarned}/>
         </div>
     );
 }
@@ -81,7 +81,8 @@ const styles: { [key: string]: CSSProperties } = {
         display: 'flex',
         flexDirection: 'row',
         flexWrap: 'wrap',
-        justifyContent: 'space-around'
+        justifyContent: 'space-around',
+        columnGap: '4px',
     },
     patch: {
         margin: '4px',
@@ -98,8 +99,22 @@ const styles: { [key: string]: CSSProperties } = {
     }
 };
 
-const PatchSVG = ({ shape }: { shape: PatchShape }) => {
+export const PatchSVG = ({shape, buttons}: { shape: PatchShape; buttons: number }) => {
     const cellSize = 20;
+    const buttonRadius = 6;
+    const buttonStrokeWidth = 1;
+
+    // ボタンの位置を決定
+    const buttonPositions = [];
+    let buttonsPlaced = 0;
+    for (let rowIndex = 0; rowIndex < shape.length; rowIndex++) {
+        for (let colIndex = 0; colIndex < shape[rowIndex].length; colIndex++) {
+            if (shape[rowIndex][colIndex] && buttonsPlaced < buttons) {
+                buttonPositions.push({x: colIndex * cellSize + cellSize / 2, y: rowIndex * cellSize + cellSize / 2});
+                buttonsPlaced++;
+            }
+        }
+    }
 
     return (
         <svg
@@ -107,19 +122,30 @@ const PatchSVG = ({ shape }: { shape: PatchShape }) => {
             height={shape.length * cellSize}
             xmlns="http://www.w3.org/2000/svg"
         >
-            {shape.map((row, rowIndex) =>
-                row.map((cell, colIndex) => (
+            {shape.map((row: boolean[], rowIndex: number) =>
+                row.map((cell: boolean, colIndex: number) => (
                     <rect
                         key={`${rowIndex}-${colIndex}`}
                         x={colIndex * cellSize}
                         y={rowIndex * cellSize}
                         width={cellSize}
                         height={cellSize}
-                        fill={cell ? 'black' : 'none'}
+                        fill={cell ? '#003200' : 'none'}
                         stroke="none"
                     />
                 ))
             )}
+            {buttonPositions.map((position: { x: number; y: number }, index: number) => (
+                <circle
+                    key={`button-${index}`}
+                    cx={position.x}
+                    cy={position.y}
+                    r={buttonRadius}
+                    fill="#55acee"
+                    stroke="black"
+                    strokeWidth={buttonStrokeWidth}
+                />
+            ))}
         </svg>
     );
 };
