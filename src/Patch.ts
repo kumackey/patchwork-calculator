@@ -47,35 +47,47 @@ export const Patches: Patch[] = [
         [true, true, true, true, false],
         [false, false, false, true, false],
     ], 1, 2, 0),
-    // new Patch(6, 1, 2, 0, 'patches/03.png'),
-
     new Patch([
         [false, true, false, false, false],
         [true, true, true, true, false],
         [false, false, true, false, false],
     ], 2, 1, 0),
-    // new Patch(6, 2, 1, 0, 'patches/28.png'),
-
     new Patch([
         [true, true, true, true, true],
         [false, false, false, false, false],
         [false, false, false, false, false],
     ], 7, 1, 1),
-    // new Patch(5, 7, 1, 1, 'patches/15.png'),
-
     new Patch([
         [true, false, false, false, false],
         [true, true, true, true, false],
         [true, false, false, false, false],
     ], 7, 2, 2),
- ];
-    // new Patch(6, 7, 2, 2, 'patches/06.png'),
+    new Patch([
+        [false, true, true, false, false],
+        [true, true, true, true, false],
+        [false, true, true, false, false],
+    ], 5, 3, 1),
+    new Patch([
+        [false, true, false, false, false],
+        [true, true, true, true, false],
+        [false, true, false, false, false],
+    ], 0, 3, 1),
+    new Patch([
+        [true, true, false, false, false],
+        [false, true, true, false, false],
+        [false, false, false, false, false],
+    ], 3, 2, 1),
+    new Patch([
+        [false, false, true, false, false],
+        [true, true, true, true, true],
+        [false, false, true, false, false],
+    ], 1, 4, 1),
+    new Patch([
+        [true, true, true, false, false],
+        [true, false, true, false, false],
+        [false, false, false, false, false],
+    ], 1, 2, 0),
 
-    // new Patch(8, 5, 3, 1, 'patches/25.png'),
-    // new Patch(5, 0, 3, 1, 'patches/19.png'),
-    // new Patch(4, 3, 2, 1, 'patches/26.png'),
-    // new Patch(7, 1, 4, 1, ''),
-    // new Patch(5, 1, 2, 0, ''),
     // new Patch(4, 4, 2, 1, ''),
     // new Patch(5, 2, 3, 1, ''),
     // new Patch(7, 2, 3, 0, ''),
@@ -100,3 +112,4 @@ export const Patches: Patch[] = [
     // new Patch(3, 2, 2, 0, ''),
     // new Patch(2, 2, 1, 0, ''),
     // new Patch(3, 1, 3, 0, '')
+];
