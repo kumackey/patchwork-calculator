@@ -106,7 +106,7 @@ export const PatchSVG = ({shape, buttons}: { shape: PatchShape; buttons: number 
     const buttonRadius = 6;
     const buttonStrokeWidth = 1;
 
-    // ボタンの位置を決定
+    // determines the position of the buttons
     const buttonPositions = [];
     let buttonsPlaced = 0;
     for (let rowIndex = 0; rowIndex < shape.length; rowIndex++) {

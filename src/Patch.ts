@@ -13,11 +13,12 @@ export class Patch {
         this.timeCost = timeCost;
         this.buttonsEarned = buttonsEarned;
 
-        this.size = this.calcSize();
+        // calculate in advance
+        this.size = this.calculateSize();
         this.name = this.generateName();
     }
 
-    private calcSize(): number {
+    private calculateSize(): number {
         return this.shape.reduce((sum, row) => sum + row.filter(cell => cell).length, 0);
     }
 
