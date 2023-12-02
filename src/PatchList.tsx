@@ -1,5 +1,5 @@
 import React, {useCallback} from 'react';
-import {Patch, Patches} from './Patch';
+import {Patch, PatchShape} from './Patch';
 import {CSSProperties} from 'react';
 import {useDrag, useDrop} from 'react-dnd';
 
@@ -63,11 +63,11 @@ function PatchContainer({patch, remaining_income_times, index, movePatch}: Patch
     return (
         <div ref={(node) => dragRef(dropRef(node))} style={styles.patch}>
             <p><b>name: {patchName}</b></p>
-            {/*<p>button cost: {patch.buttonCost}, time cost: {patch.timeCost}</p>*/}
+            <p>🔵{patch.buttonCost} ⌛{patch.timeCost}</p>
             <p>total score: {patch.totalScores(remaining_income_times)}</p>
             <p>button rate: {floor(patch.buttonRate(remaining_income_times))}</p>
             <p>time rate: {floor(patch.timeRate(remaining_income_times))}</p>
-            <img src={patch.image} alt={patchName} style={styles.image}/>
+            <PatchSVG shape={patch.shape}/>
         </div>
     );
 }
@@ -96,4 +96,30 @@ const styles: { [key: string]: CSSProperties } = {
         width: '100%',
         height: 'auto',
     }
+};
+
+const PatchSVG = ({ shape }: { shape: PatchShape }) => {
+    const cellSize = 20;
+
+    return (
+        <svg
+            width={shape[0].length * cellSize}
+            height={shape.length * cellSize}
+            xmlns="http://www.w3.org/2000/svg"
+        >
+            {shape.map((row, rowIndex) =>
+                row.map((cell, colIndex) => (
+                    <rect
+                        key={`${rowIndex}-${colIndex}`}
+                        x={colIndex * cellSize}
+                        y={rowIndex * cellSize}
+                        width={cellSize}
+                        height={cellSize}
+                        fill={cell ? 'black' : 'none'}
+                        stroke="none"
+                    />
+                ))
+            )}
+        </svg>
+    );
 };

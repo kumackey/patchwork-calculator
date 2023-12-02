@@ -18,6 +18,7 @@ function App() {
                 {buttons}
             </div>
             <PatchList patches={patches} remaining_income_times={remainingIncomeTimes} setPatches={setPatches}/>
+            {/*<ArchivedPatchList patches={patches} />*/}
         </div>
     );
 }
