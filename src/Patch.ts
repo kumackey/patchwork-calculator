@@ -1,20 +1,27 @@
 export class Patch {
     shape: PatchShape;
-    size: number;
     buttonCost: number;
     timeCost: number;
     buttonsEarned: number;
 
+    size: number;
+    name: string;
+
     constructor(shape: PatchShape, buttonCost: number, timeCost: number, buttonsEarned: number) {
         this.shape = shape;
-        this.size = this.calcSize();
-
         this.buttonCost = buttonCost;
         this.timeCost = timeCost;
         this.buttonsEarned = buttonsEarned;
+
+        this.size = this.calcSize();
+        this.name = this.generateName();
     }
 
-    public name() {
+    private calcSize(): number {
+        return this.shape.reduce((sum, row) => sum + row.filter(cell => cell).length, 0);
+    }
+
+    private generateName(): string {
         return `${this.buttonCost}-${this.timeCost}(${this.size})+${this.buttonsEarned}`;
     }
 
@@ -28,10 +35,6 @@ export class Patch {
 
     public timeRate(remaining_income_times: number): number {
         return (this.totalScores(remaining_income_times) - this.buttonCost) / this.timeCost;
-    }
-
-    private calcSize(): number {
-        return this.shape.reduce((sum, row) => sum + row.filter(cell => cell).length, 0);
     }
 }
 

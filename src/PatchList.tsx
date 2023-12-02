@@ -20,18 +20,19 @@ export function PatchList({remaining_income_times, patches, setPatches}: PatchLi
         setPatches(newPatches);
     }, [patches, setPatches]);
 
-
     return (
-        <div style={styles.container}>
-            {patches.map((patch, index) => (
-                <PatchContainer
-                    key={patch.name()}
-                    patch={patch}
-                    remaining_income_times={remaining_income_times}
-                    index={index}
-                    movePatch={movePatch}
-                />
-            ))}
+        <div style={styles.patchList}>
+            {patches.map((patch, index) => {
+                return (
+                    <PatchContainer
+                        key={patch.name}
+                        patch={patch}
+                        remaining_income_times={remaining_income_times}
+                        index={index}
+                        movePatch={movePatch}
+                    />
+                );
+            })}
         </div>
     );
 }
@@ -59,10 +60,12 @@ function PatchContainer({patch, remaining_income_times, index, movePatch}: Patch
         },
     });
 
-    const patchName = patch.name();
+    const backgroundColor = generateRandomColor(patch.name);
+    const patchStyle = {...styles.patchContainer, background: backgroundColor};
+
     return (
-        <div ref={(node) => dragRef(dropRef(node))} style={styles.patch}>
-            <p><b>name: {patchName}</b></p>
+        <div ref={(node) => dragRef(dropRef(node))} style={patchStyle}>
+            <p><b>{patch.name}</b></p>
             <p>🔵{patch.buttonCost} ⌛{patch.timeCost}</p>
             <p>total score: {patch.totalScores(remaining_income_times)}</p>
             <p>button rate: {floor(patch.buttonRate(remaining_income_times))}</p>
@@ -72,32 +75,31 @@ function PatchContainer({patch, remaining_income_times, index, movePatch}: Patch
     );
 }
 
+function generateRandomColor(str: string): string {
+    const seeds = [
+        seedFromString(str),
+        seedFromString(str + str),
+        seedFromString(str + str + str),
+    ];
+
+    const randomNums = seeds.map(seed => Math.abs(seed) % 16);
+    const hexParts = randomNums.map(num => num.toString(16));
+    return `#f${hexParts[0]}f${hexParts[1]}f${hexParts[2]}`;
+}
+
+function seedFromString(str: string): number {
+    let hash = 0;
+    for (let i = 0; i < str.length; i++) {
+        const char = str.charCodeAt(i);
+        hash = ((hash << 5) - hash) + char;
+        hash |= 0;
+    }
+    return hash;
+}
+
 function floor(n: number): number {
     return Math.floor(n * 100) / 100
 }
-
-const styles: { [key: string]: CSSProperties } = {
-    container: {
-        display: 'flex',
-        flexDirection: 'row',
-        flexWrap: 'wrap',
-        justifyContent: 'space-around',
-        columnGap: '4px',
-    },
-    patch: {
-        margin: '4px',
-        textAlign: 'center',
-        flexBasis: 'auto',
-        flexGrow: 1,
-        maxWidth: '160px',
-        border: '2px solid black',
-        background: 'floralwhite'
-    },
-    image: {
-        width: '100%',
-        height: 'auto',
-    }
-};
 
 export const PatchSVG = ({shape, buttons}: { shape: PatchShape; buttons: number }) => {
     const cellSize = 20;
@@ -148,4 +150,22 @@ export const PatchSVG = ({shape, buttons}: { shape: PatchShape; buttons: number 
             ))}
         </svg>
     );
+};
+
+const styles: { [key: string]: CSSProperties } = {
+    patchList: {
+        display: 'flex',
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        justifyContent: 'flex-start',
+        columnGap: '4px',
+    },
+    patchContainer: {
+        margin: '4px',
+        textAlign: 'center',
+        flexBasis: 'auto',
+        flexGrow: 1,
+        maxWidth: '160px',
+        border: '1px solid black',
+    },
 };
