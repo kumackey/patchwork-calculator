@@ -90,6 +90,7 @@ const styles: { [key: string]: CSSProperties } = {
         flexGrow: 1,
         maxWidth: '160px',
         border: '2px solid black',
+        background: 'floralwhite'
     },
     image: {
         width: '100%',
