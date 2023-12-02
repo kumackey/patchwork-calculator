@@ -26,16 +26,16 @@ export class Patch {
         return `${this.buttonCost}-${this.timeCost}(${this.size})+${this.buttonsEarned}`;
     }
 
-    public totalScores(remaining_income_times: RemainingIncomeTimes): number {
-        return this.buttonsEarned * remaining_income_times + 2 * this.size;
+    public totalScores(remainingIncomeTimes: RemainingIncomeTimes): number {
+        return this.buttonsEarned * remainingIncomeTimes + 2 * this.size;
     }
 
-    public buttonRate(remaining_income_times: RemainingIncomeTimes): number {
-        return this.totalScores(remaining_income_times) / (this.buttonCost + this.timeCost);
+    public buttonRate(remainingIncomeTimes: RemainingIncomeTimes): number {
+        return this.totalScores(remainingIncomeTimes) / (this.buttonCost + this.timeCost);
     }
 
-    public timeRate(remaining_income_times: RemainingIncomeTimes): number {
-        return (this.totalScores(remaining_income_times) - this.buttonCost) / this.timeCost;
+    public timeRate(remainingIncomeTimes: RemainingIncomeTimes): number {
+        return (this.totalScores(remainingIncomeTimes) - this.buttonCost) / this.timeCost;
     }
 }
 
@@ -47,7 +47,17 @@ export type PatchShape = [
 
 export type RemainingIncomeTimes = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10;
 
-export const Patches: Patch[] = [
+export function defaultPatches(defaultRemainingIncomeTimes: RemainingIncomeTimes): Patch[] {
+    return Patches.sort((a: Patch, b: Patch) => {
+        const buttonRateDiff = b.buttonRate(defaultRemainingIncomeTimes) - a.buttonRate(defaultRemainingIncomeTimes);
+        if (buttonRateDiff !== 0) {
+            return buttonRateDiff;
+        }
+        return b.timeRate(defaultRemainingIncomeTimes) - a.timeRate(defaultRemainingIncomeTimes);
+    });
+}
+
+const Patches: Patch[] = [
     new Patch([
         [true, false, false, false, false],
         [true, true, true, true, false],

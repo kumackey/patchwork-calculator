@@ -1,11 +1,12 @@
 import {useState} from 'react';
 import {PatchList} from './PatchList';
 import './App.css';
-import {Patches, RemainingIncomeTimes} from "./Patch";
+import {defaultPatches, RemainingIncomeTimes} from "./Patch";
 
 function App() {
-    const [remainingIncomeTimes, setRemainingIncomeTimes] = useState<RemainingIncomeTimes>(9);
-    const [patches, setPatches] = useState(Patches);
+    const defaultRemainingIncomeTimes: RemainingIncomeTimes = 9;
+    const [remainingIncomeTimes, setRemainingIncomeTimes] = useState<RemainingIncomeTimes>(defaultRemainingIncomeTimes);
+    const [patches, setPatches] = useState(defaultPatches(defaultRemainingIncomeTimes));
 
     const buttons = [];
     for (let i = 9 as RemainingIncomeTimes; i >= 1; i-- as RemainingIncomeTimes) {
@@ -17,7 +18,7 @@ function App() {
             <div className="button-group">
                 {buttons}
             </div>
-            <PatchList patches={patches} remaining_income_times={remainingIncomeTimes} setPatches={setPatches}/>
+            <PatchList patches={patches} remainingIncomeTimes={remainingIncomeTimes} setPatches={setPatches}/>
             {/*<ArchivedPatchList patches={patches} />*/}
         </div>
     );

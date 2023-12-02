@@ -7,11 +7,11 @@ const PatchType = 'patch';
 
 interface PatchListProps {
     patches: Patch[];
-    remaining_income_times: RemainingIncomeTimes;
+    remainingIncomeTimes: RemainingIncomeTimes;
     setPatches: (patches: Patch[]) => void;
 }
 
-export function PatchList({remaining_income_times, patches, setPatches}: PatchListProps) {
+export function PatchList({remainingIncomeTimes, patches, setPatches}: PatchListProps) {
     const movePatch = useCallback((dragIndex: number, hoverIndex: number) => {
         const dragPatch = patches[dragIndex];
         const newPatches = [...patches];
@@ -27,7 +27,7 @@ export function PatchList({remaining_income_times, patches, setPatches}: PatchLi
                     <PatchContainer
                         key={patch.name}
                         patch={patch}
-                        remaining_income_times={remaining_income_times}
+                        remainingIncomeTimes={remainingIncomeTimes}
                         index={index}
                         movePatch={movePatch}
                     />
@@ -39,12 +39,12 @@ export function PatchList({remaining_income_times, patches, setPatches}: PatchLi
 
 interface PatchContainerProps {
     patch: Patch;
-    remaining_income_times: RemainingIncomeTimes;
+    remainingIncomeTimes: RemainingIncomeTimes;
     index: number;
     movePatch: (from: number, to: number) => void;
 }
 
-function PatchContainer({patch, remaining_income_times, index, movePatch}: PatchContainerProps) {
+function PatchContainer({patch, remainingIncomeTimes, index, movePatch}: PatchContainerProps) {
     const [, dragRef] = useDrag({
         type: PatchType,
         item: {type: PatchType, index},
@@ -70,9 +70,9 @@ function PatchContainer({patch, remaining_income_times, index, movePatch}: Patch
         <div ref={(node) => dragRef(dropRef(node))} style={patchStyle}>
             <p><b>{patch.name}</b></p>
             <p>🔵{patch.buttonCost} ⌛{patch.timeCost}</p>
-            <p>total score: {patch.totalScores(remaining_income_times)}</p>
-            <p>button rate: {floor(patch.buttonRate(remaining_income_times))}</p>
-            <p>time rate: {floor(patch.timeRate(remaining_income_times))}</p>
+            <p>total score: {patch.totalScores(remainingIncomeTimes)}</p>
+            <p>button rate: {floor(patch.buttonRate(remainingIncomeTimes))}</p>
+            <p>time rate: {floor(patch.timeRate(remainingIncomeTimes))}</p>
             <PatchSVG shape={patch.shape} buttons={patch.buttonsEarned}/>
         </div>
     );
