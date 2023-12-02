@@ -26,15 +26,15 @@ export class Patch {
         return `${this.buttonCost}-${this.timeCost}(${this.size})+${this.buttonsEarned}`;
     }
 
-    public totalScores(remaining_income_times: number): number {
+    public totalScores(remaining_income_times: RemainingIncomeTimes): number {
         return this.buttonsEarned * remaining_income_times + 2 * this.size;
     }
 
-    public buttonRate(remaining_income_times: number): number {
+    public buttonRate(remaining_income_times: RemainingIncomeTimes): number {
         return this.totalScores(remaining_income_times) / (this.buttonCost + this.timeCost);
     }
 
-    public timeRate(remaining_income_times: number): number {
+    public timeRate(remaining_income_times: RemainingIncomeTimes): number {
         return (this.totalScores(remaining_income_times) - this.buttonCost) / this.timeCost;
     }
 }
@@ -44,6 +44,8 @@ export type PatchShape = [
     [boolean, boolean, boolean, boolean, boolean],
     [boolean, boolean, boolean, boolean, boolean]
 ];
+
+export type RemainingIncomeTimes = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10;
 
 export const Patches: Patch[] = [
     new Patch([

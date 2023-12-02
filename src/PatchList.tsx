@@ -1,5 +1,5 @@
 import React, {useCallback} from 'react';
-import {Patch, PatchShape} from './Patch';
+import {Patch, PatchShape, RemainingIncomeTimes} from './Patch';
 import {CSSProperties} from 'react';
 import {useDrag, useDrop} from 'react-dnd';
 
@@ -7,7 +7,7 @@ const PatchType = 'patch';
 
 interface PatchListProps {
     patches: Patch[];
-    remaining_income_times: number;
+    remaining_income_times: RemainingIncomeTimes;
     setPatches: (patches: Patch[]) => void;
 }
 
@@ -39,7 +39,7 @@ export function PatchList({remaining_income_times, patches, setPatches}: PatchLi
 
 interface PatchContainerProps {
     patch: Patch;
-    remaining_income_times: number;
+    remaining_income_times: RemainingIncomeTimes;
     index: number;
     movePatch: (from: number, to: number) => void;
 }
@@ -52,7 +52,10 @@ function PatchContainer({patch, remaining_income_times, index, movePatch}: Patch
 
     const [, dropRef] = useDrop({
         accept: PatchType,
-        hover(item: { type: string; index: number }, monitor) {
+        hover(item: {
+            type: string;
+            index: number
+        }, monitor) {
             if (item.index !== index) {
                 movePatch(item.index, index);
                 item.index = index;
@@ -77,6 +80,7 @@ function PatchContainer({patch, remaining_income_times, index, movePatch}: Patch
 
 function generateRandomColor(str: string): string {
     const seeds = [
+        // HACK: use the same seed
         seedFromString(str),
         seedFromString(str + str),
         seedFromString(str + str + str),
@@ -84,9 +88,12 @@ function generateRandomColor(str: string): string {
 
     const randomNums = seeds.map(seed => Math.abs(seed) % 16);
     const hexParts = randomNums.map(num => num.toString(16));
+
+    // e.g. #faf1fe
     return `#f${hexParts[0]}f${hexParts[1]}f${hexParts[2]}`;
 }
 
+// HACK: Probably better to use a library
 function seedFromString(str: string): number {
     let hash = 0;
     for (let i = 0; i < str.length; i++) {
@@ -98,10 +105,14 @@ function seedFromString(str: string): number {
 }
 
 function floor(n: number): number {
+    // e.g. 1.3333... -> 1.33
     return Math.floor(n * 100) / 100
 }
 
-export const PatchSVG = ({shape, buttons}: { shape: PatchShape; buttons: number }) => {
+export const PatchSVG = ({shape, buttons}: {
+    shape: PatchShape;
+    buttons: number
+}) => {
     const cellSize = 20;
     const buttonRadius = 6;
     const buttonStrokeWidth = 1;
@@ -132,18 +143,21 @@ export const PatchSVG = ({shape, buttons}: { shape: PatchShape; buttons: number 
                         y={rowIndex * cellSize}
                         width={cellSize}
                         height={cellSize}
-                        fill={cell ? '#003200' : 'none'}
+                        fill={cell ? '#003200' : 'none'} // patch color
                         stroke="none"
                     />
                 ))
             )}
-            {buttonPositions.map((position: { x: number; y: number }, index: number) => (
+            {buttonPositions.map((position: {
+                x: number;
+                y: number
+            }, index: number) => (
                 <circle
                     key={`button-${index}`}
                     cx={position.x}
                     cy={position.y}
                     r={buttonRadius}
-                    fill="#55acee"
+                    fill="#55acee" // button color on patch
                     stroke="black"
                     strokeWidth={buttonStrokeWidth}
                 />
@@ -152,7 +166,10 @@ export const PatchSVG = ({shape, buttons}: { shape: PatchShape; buttons: number 
     );
 };
 
-const styles: { [key: string]: CSSProperties } = {
+// HACK: I don't know anything about CSS... Help me...
+const styles: {
+    [key: string]: CSSProperties
+} = {
     patchList: {
         display: 'flex',
         flexDirection: 'row',
