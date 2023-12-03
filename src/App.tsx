@@ -33,9 +33,11 @@ function App() {
             <div style={{display: 'flex', flexWrap: 'wrap', justifyContent: 'center', alignItems: 'center'}}>
                 <div style={{flex: 3, minWidth: '300px', padding: '10px'}}>
                     <h1>Formula</h1>
-                    <p>total cost = (patch size) * 2 + (buttons on patch) * (remaining income times)</p>
-                    <p>button rate = (total cost) / ((button cost) + (time cost))</p>
-                    <p>time rate = ((total cost) - (button cost)) / (time cost)</p>
+                    <p><b>When purchasing patches, be mindful of the Button Rate in the early game, the Time Rate in the
+                        mid-game, and the Total Score in the late game.</b></p>
+                    <p>Total Score = (patch size) * 2 + (buttons on patch) * (remaining income times)</p>
+                    <p>Button Rate = (Total Score) / ((button cost) + (time cost))</p>
+                    <p>Time Rate = ((Total Score) - (button cost)) / (time cost)</p>
                     <p>
                         For more details, see <a
                         href="https://boardgamegeek.com/thread/1307009/patchwork-tactic-maximizing-buttons-per-time"
@@ -67,7 +69,8 @@ function App() {
             </div>
 
         </div>
-    );
+    )
+        ;
 }
 
 export default App;
