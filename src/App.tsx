@@ -32,6 +32,16 @@ function App() {
 
             <h1>Placed Patches</h1>
             <PlacedPatchList placedPatches={placedPatches}/>
+
+            <h1>Formula</h1>
+            <p>total cost = (patch size) * 2 + (buttons earned) * (remaining income times)</p>
+            <p>button rate = (total cost) / ((button cost) + (time cost))</p>
+            <p>time rate = ((total cost) - (button cost)) / (time cost)</p>
+            <p>
+                For more details, see the <a
+                href="https://boardgamegeek.com/thread/1307009/patchwork-tactic-maximizing-buttons-time"
+                target="_blank">A Patchwork Tactic: Maximizing Buttons Per Time</a>.
+            </p>
         </div>
     );
 }
