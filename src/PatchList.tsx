@@ -9,10 +9,10 @@ interface PatchListProps {
     patches: Patch[];
     remainingIncomeTimes: RemainingIncomeTimes;
     setPatches: (patches: Patch[]) => void;
-    addArchivedPatches: (patch: Patch) => void;
+    addPlacedPatches: (patch: Patch) => void;
 }
 
-export function PatchList({remainingIncomeTimes, patches, setPatches, addArchivedPatches}: PatchListProps) {
+export function PatchList({remainingIncomeTimes, patches, setPatches, addPlacedPatches}: PatchListProps) {
     const movePatch = useCallback((dragIndex: number, hoverIndex: number) => {
         const dragPatch = patches[dragIndex];
         const newPatches = [...patches];
@@ -31,7 +31,7 @@ export function PatchList({remainingIncomeTimes, patches, setPatches, addArchive
                         remainingIncomeTimes={remainingIncomeTimes}
                         index={index}
                         movePatch={movePatch}
-                        handleArchive={handleArchiveFunc(setPatches, addArchivedPatches, patches)}
+                        handlePlace={handlePlaceFunc(setPatches, addPlacedPatches, patches)}
                     />
                 );
             })}
@@ -39,10 +39,10 @@ export function PatchList({remainingIncomeTimes, patches, setPatches, addArchive
     );
 }
 
-function handleArchiveFunc(setPatches: (patches: Patch[]) => void, addArchivedPatches: (patch: Patch) => void, patches: Patch[]) {
+function handlePlaceFunc(setPatches: (patches: Patch[]) => void, addPlacedPatches: (patch: Patch) => void, patches: Patch[]) {
     return (patch: Patch) => {
         setPatches(patches.filter(p => p.name !== patch.name));
-        addArchivedPatches(patch);
+        addPlacedPatches(patch);
     }
 }
 
@@ -51,10 +51,10 @@ interface PatchContainerProps {
     remainingIncomeTimes: RemainingIncomeTimes;
     index: number;
     movePatch: (from: number, to: number) => void;
-    handleArchive: (patch: Patch) => void;
+    handlePlace: (patch: Patch) => void;
 }
 
-function PatchContainer({patch, remainingIncomeTimes, index, movePatch, handleArchive}: PatchContainerProps) {
+function PatchContainer({patch, remainingIncomeTimes, index, movePatch, handlePlace}: PatchContainerProps) {
     const [, dragRef] = useDrag({
         type: PatchType,
         item: {type: PatchType, index},
@@ -79,7 +79,7 @@ function PatchContainer({patch, remainingIncomeTimes, index, movePatch, handleAr
     return (
         <div ref={(node) => dragRef(dropRef(node))} style={patchStyle}>
             <p><b>{patch.name}</b>
-                <button onClick={() => handleArchive(patch)}>×</button>
+                <button onClick={() => handlePlace(patch)}>×</button>
             </p>
             <p>🔵{patch.buttonCost} ⌛{patch.timeCost}</p>
             <p>total score: {patch.totalScores(remainingIncomeTimes)}</p>

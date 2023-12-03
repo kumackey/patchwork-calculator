@@ -1,6 +1,6 @@
 import {useState} from 'react';
 import {PatchList} from './PatchList';
-import {ArchivedPatchList} from './ArchivedPatchList';
+import {PlacedPatchList} from './PlacedPatchList';
 import './App.css';
 import {defaultPatches, Patch, RemainingIncomeTimes} from "./Patch";
 
@@ -8,29 +8,30 @@ function App() {
     const defaultRemainingIncomeTimes: RemainingIncomeTimes = 9;
     const [remainingIncomeTimes, setRemainingIncomeTimes] = useState<RemainingIncomeTimes>(defaultRemainingIncomeTimes);
     const [patches, setPatches] = useState(defaultPatches(defaultRemainingIncomeTimes));
-    const [archivedPatches, setArchivedPatches] = useState<Patch[]>([]);
+    const [placedPatches, setPlacedPatches] = useState<Patch[]>([]);
 
     const buttons = [];
     for (let i = 9 as RemainingIncomeTimes; i >= 1; i-- as RemainingIncomeTimes) {
         buttons.push(<button key={i} onClick={() => setRemainingIncomeTimes(i)}>{i}</button>);
     }
 
-    const addArchivedPatches = (patch: Patch) => {
-        archivedPatches.push(patch);
+    const addPlacedPatches = (patch: Patch) => {
+        setPlacedPatches([...placedPatches, patch]);
     }
 
     return (
         <div className="App">
-            <div className="button-group">
-                {buttons}
-            </div>
+            <div className="button-group">{buttons}</div>
+
+            <h1>Patches</h1>
             <PatchList patches={patches}
                        remainingIncomeTimes={remainingIncomeTimes}
                        setPatches={setPatches}
-                       addArchivedPatches={addArchivedPatches}
+                       addPlacedPatches={addPlacedPatches}
             />
-            <hr/>
-            <ArchivedPatchList archivedPatches={archivedPatches}/>
+
+            <h1>Placed Patches</h1>
+            <PlacedPatchList placedPatches={placedPatches}/>
         </div>
     );
 }

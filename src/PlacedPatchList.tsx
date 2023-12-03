@@ -3,13 +3,13 @@ import {Patch} from './Patch';
 import {PatchSVG} from "./PatchSVG";
 
 interface PatchListProps {
-    archivedPatches: Patch[];
+    placedPatches: Patch[];
 }
 
-export function ArchivedPatchList({archivedPatches}: PatchListProps) {
+export function PlacedPatchList({placedPatches}: PatchListProps) {
     return (
         <div style={styles.archivedList}>
-            {archivedPatches.map((patch: Patch) => {
+            {placedPatches.map((patch: Patch) => {
                 return (
                     <PatchSVG key={patch.name} patch={patch}/>
                 );
