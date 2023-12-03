@@ -36,7 +36,7 @@ export const PatchSVG = ({patch}: {
                         y={rowIndex * cellSize}
                         width={cellSize}
                         height={cellSize}
-                        fill={cell ? '#003200' : 'none'} // patch color
+                        fill={cell ? 'black' : 'none'} // patch color
                         stroke="none"
                     />
                 ))

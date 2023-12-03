@@ -79,7 +79,9 @@ function PatchContainer({patch, remainingIncomeTimes, index, movePatch, handlePl
     return (
         <div ref={(node) => dragRef(dropRef(node))} style={patchStyle}>
             <p><b>{patch.name}</b>
-                <button onClick={() => handlePlace(patch)}>×</button>
+                <button style={{marginLeft: '4px'}} onClick={() => handlePlace(patch)}>
+                    ×
+                </button>
             </p>
             <p>🔵{patch.buttonCost} ⌛{patch.timeCost}</p>
             <p>total score: {patch.totalScores(remainingIncomeTimes)}</p>

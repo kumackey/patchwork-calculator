@@ -1,29 +1,25 @@
 import {useState} from 'react';
 import {PatchList} from './PatchList';
 import {PlacedPatchList} from './PlacedPatchList';
-import './App.css';
 import {defaultPatches, Patch, RemainingIncomeTimes} from "./Patch";
+import {RemainingIncomeTimesButtons} from "./RemainingIncomeTimesButtons";
+
+import './App.css';
 
 function App() {
     const defaultRemainingIncomeTimes: RemainingIncomeTimes = 9;
     const [remainingIncomeTimes, setRemainingIncomeTimes] = useState<RemainingIncomeTimes>(defaultRemainingIncomeTimes);
     const [patches, setPatches] = useState(defaultPatches(defaultRemainingIncomeTimes));
     const [placedPatches, setPlacedPatches] = useState<Patch[]>([]);
-
-    const buttons = [];
-    for (let i = 9 as RemainingIncomeTimes; i >= 1; i-- as RemainingIncomeTimes) {
-        buttons.push(<button key={i} onClick={() => setRemainingIncomeTimes(i)}>{i}</button>);
-    }
-
     const addPlacedPatches = (patch: Patch) => {
         setPlacedPatches([...placedPatches, patch]);
     }
 
     return (
         <div className="App">
-            <div className="button-group">{buttons}</div>
-
             <h1>Patches</h1>
+            <h2>Remaining Income Time</h2>
+            <RemainingIncomeTimesButtons setRemainingIncomeTimes={setRemainingIncomeTimes}/>
             <PatchList patches={patches}
                        remainingIncomeTimes={remainingIncomeTimes}
                        setPatches={setPatches}
@@ -42,6 +38,8 @@ function App() {
                 href="https://boardgamegeek.com/thread/1307009/patchwork-tactic-maximizing-buttons-time"
                 target="_blank">A Patchwork Tactic: Maximizing Buttons Per Time</a>.
             </p>
+
+            <p>Contact: <a href="https://twitter.com/kumackey_" target="_blank">@kumackey_</a></p>
         </div>
     );
 }
