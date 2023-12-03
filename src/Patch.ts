@@ -39,7 +39,7 @@ export class Patch {
     }
 }
 
-export type PatchShape = [
+type PatchShape = [
     [boolean, boolean, boolean, boolean, boolean],
     [boolean, boolean, boolean, boolean, boolean],
     [boolean, boolean, boolean, boolean, boolean]
