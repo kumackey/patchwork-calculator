@@ -1,6 +1,5 @@
-import React, {useCallback} from 'react';
+import React, {useCallback, CSSProperties} from 'react';
 import {Patch, RemainingIncomeTimes} from './Patch';
-import {CSSProperties} from 'react';
 import {useDrag, useDrop} from 'react-dnd';
 import {PatchSVG} from "./PatchSVG";
 

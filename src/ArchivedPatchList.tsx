@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {CSSProperties} from 'react';
 import {Patch} from './Patch';
 import {PatchSVG} from "./PatchSVG";
 
@@ -8,8 +8,8 @@ interface PatchListProps {
 
 export function ArchivedPatchList({archivedPatches}: PatchListProps) {
     return (
-        <div>
-            {archivedPatches.map((patch, index) => {
+        <div style={styles.archivedList}>
+            {archivedPatches.map((patch: Patch) => {
                 return (
                     <PatchSVG key={patch.name} patch={patch}/>
                 );
@@ -17,3 +17,16 @@ export function ArchivedPatchList({archivedPatches}: PatchListProps) {
         </div>
     );
 }
+
+const styles: {
+    [key: string]: CSSProperties
+} = {
+    archivedList: {
+        display: 'flex',
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        justifyContent: 'flex-start',
+        gap: '4px',
+    },
+};
+
