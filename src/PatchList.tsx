@@ -84,9 +84,8 @@ function PatchContainer({patch, remainingIncomeTimes, index, movePatch, handlePl
                 </button>
             </p>
             <p>🔵{patch.buttonCost} ⌛{patch.timeCost}</p>
-            <p>total score: {patch.totalScores(remainingIncomeTimes)}</p>
-            <p>button rate: {floor(patch.buttonRate(remainingIncomeTimes))}</p>
-            <p>time rate: {floor(patch.timeRate(remainingIncomeTimes))}</p>
+            <p>Profit: {patch.profit(remainingIncomeTimes)}</p>
+            <p>Profit/Time: {floor(patch.profitPerTime(remainingIncomeTimes))}</p>
             <PatchSVG patch={patch}/>
         </div>
     );
@@ -132,10 +131,9 @@ const styles: {
         flexDirection: 'row',
         flexWrap: 'wrap',
         justifyContent: 'flex-start',
-        columnGap: '4px',
     },
     patchContainer: {
-        margin: '4px',
+        margin: '1px',
         textAlign: 'center',
         flexBasis: 'auto',
         flexGrow: 1,

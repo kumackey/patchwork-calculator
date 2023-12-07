@@ -15,7 +15,7 @@ export const PatchSVG = ({patch}: {
     let buttonsPlaced = 0;
     for (let rowIndex = 0; rowIndex < shape.length; rowIndex++) {
         for (let colIndex = 0; colIndex < shape[rowIndex].length; colIndex++) {
-            if (shape[rowIndex][colIndex] && buttonsPlaced < patch.buttonsEarned) {
+            if (shape[rowIndex][colIndex] && buttonsPlaced < patch.buttons) {
                 buttonPositions.push({x: colIndex * cellSize + cellSize / 2, y: rowIndex * cellSize + cellSize / 2});
                 buttonsPlaced++;
             }

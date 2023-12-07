@@ -2,7 +2,7 @@ export class Patch {
     shape: PatchShape;
     buttonCost: number;
     timeCost: number;
-    buttonsEarned: number;
+    buttons: number;
 
     size: number;
     name: string;
@@ -11,7 +11,7 @@ export class Patch {
         this.shape = shape;
         this.buttonCost = buttonCost;
         this.timeCost = timeCost;
-        this.buttonsEarned = buttonsEarned;
+        this.buttons = buttonsEarned;
 
         // calculate in advance
         this.size = this.calculateSize();
@@ -23,19 +23,15 @@ export class Patch {
     }
 
     private generateName(): string {
-        return `${this.buttonCost}-${this.timeCost}(${this.size})+${this.buttonsEarned}`;
+        return `${this.buttonCost}-${this.timeCost}(${this.size})+${this.buttons}`;
     }
 
-    public totalScores(remainingIncomeTimes: RemainingIncomeTimes): number {
-        return this.buttonsEarned * remainingIncomeTimes + 2 * this.size;
+    public profit(remainingIncomeTimes: RemainingIncomeTimes): number {
+        return this.buttons * remainingIncomeTimes + 2 * this.size;
     }
 
-    public buttonRate(remainingIncomeTimes: RemainingIncomeTimes): number {
-        return this.totalScores(remainingIncomeTimes) / (this.buttonCost + this.timeCost);
-    }
-
-    public timeRate(remainingIncomeTimes: RemainingIncomeTimes): number {
-        return (this.totalScores(remainingIncomeTimes) - this.buttonCost) / this.timeCost;
+    public profitPerTime(remainingIncomeTimes: RemainingIncomeTimes): number {
+        return (this.profit(remainingIncomeTimes) - this.buttonCost) / this.timeCost;
     }
 }
 
@@ -49,11 +45,7 @@ export type RemainingIncomeTimes = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10;
 
 export function defaultPatches(defaultRemainingIncomeTimes: RemainingIncomeTimes): Patch[] {
     return Patches.sort((a: Patch, b: Patch) => {
-        const buttonRateDiff = b.buttonRate(defaultRemainingIncomeTimes) - a.buttonRate(defaultRemainingIncomeTimes);
-        if (buttonRateDiff !== 0) {
-            return buttonRateDiff;
-        }
-        return b.timeRate(defaultRemainingIncomeTimes) - a.timeRate(defaultRemainingIncomeTimes);
+        return b.profitPerTime(defaultRemainingIncomeTimes) - a.profitPerTime(defaultRemainingIncomeTimes);
     });
 }
 
