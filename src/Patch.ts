@@ -30,6 +30,10 @@ export class Patch {
         return this.buttons * remainingIncomeTimes + 2 * this.size;
     }
 
+    public buttonPerCost(): number {
+        return this.buttons / (this.buttonCost + this.timeCost);
+    }
+
     public profitPerTime(remainingIncomeTimes: RemainingIncomeTimes): number {
         return (this.profit(remainingIncomeTimes) - this.buttonCost) / this.timeCost;
     }
@@ -43,9 +47,9 @@ type PatchShape = [
 
 export type RemainingIncomeTimes = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10;
 
-export function defaultPatches(defaultRemainingIncomeTimes: RemainingIncomeTimes): Patch[] {
+export function defaultPatches(_: RemainingIncomeTimes): Patch[] {
     return Patches.sort((a: Patch, b: Patch) => {
-        return b.profitPerTime(defaultRemainingIncomeTimes) - a.profitPerTime(defaultRemainingIncomeTimes);
+        return b.buttonPerCost() - a.buttonPerCost();
     });
 }
 

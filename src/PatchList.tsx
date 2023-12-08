@@ -85,6 +85,7 @@ function PatchContainer({patch, remainingIncomeTimes, index, movePatch, handlePl
             </p>
             <p>🔵{patch.buttonCost} ⌛{patch.timeCost}</p>
             <p>Profit: {patch.profit(remainingIncomeTimes)}</p>
+            <p>Button/Cost: {floor(patch.buttonPerCost())}</p>
             <p>Profit/Time: {floor(patch.profitPerTime(remainingIncomeTimes))}</p>
             <PatchSVG patch={patch}/>
         </div>
