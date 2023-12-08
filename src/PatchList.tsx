@@ -9,10 +9,10 @@ interface PatchListProps {
     patches: Patch[];
     remainingIncomeTimes: RemainingIncomeTimes;
     setPatches: (patches: Patch[]) => void;
-    addPlacedPatches: (patch: Patch) => void;
+    addToPlacedPatches: (patch: Patch) => void;
 }
 
-export function PatchList({remainingIncomeTimes, patches, setPatches, addPlacedPatches}: PatchListProps) {
+export function PatchList({remainingIncomeTimes, patches, setPatches, addToPlacedPatches}: PatchListProps) {
     const movePatch = useCallback((dragIndex: number, hoverIndex: number) => {
         const dragPatch = patches[dragIndex];
         const newPatches = [...patches];
@@ -31,7 +31,7 @@ export function PatchList({remainingIncomeTimes, patches, setPatches, addPlacedP
                         remainingIncomeTimes={remainingIncomeTimes}
                         index={index}
                         movePatch={movePatch}
-                        handlePlace={handlePlaceFunc(setPatches, addPlacedPatches, patches)}
+                        handlePlace={handlePlaceFunc(setPatches, addToPlacedPatches, patches)}
                     />
                 );
             })}
@@ -39,10 +39,10 @@ export function PatchList({remainingIncomeTimes, patches, setPatches, addPlacedP
     );
 }
 
-function handlePlaceFunc(setPatches: (patches: Patch[]) => void, addPlacedPatches: (patch: Patch) => void, patches: Patch[]) {
+function handlePlaceFunc(setPatches: (patches: Patch[]) => void, addToPlacedPatches: (patch: Patch) => void, patches: Patch[]) {
     return (patch: Patch) => {
         setPatches(patches.filter(p => p.name !== patch.name));
-        addPlacedPatches(patch);
+        addToPlacedPatches(patch);
     }
 }
 

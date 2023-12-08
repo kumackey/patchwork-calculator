@@ -4,14 +4,15 @@ import {PatchSVG} from "./PatchSVG";
 
 interface PatchListProps {
     placedPatches: Patch[];
+    restorePlacedPatch: (patch: Patch) => void;
 }
 
-export function PlacedPatchList({placedPatches}: PatchListProps) {
+export function PlacedPatchList({placedPatches, restorePlacedPatch}: PatchListProps) {
     return (
         <div style={styles.archivedList}>
             {placedPatches.map((patch: Patch) => {
                 return (
-                    <PatchSVG key={patch.name} patch={patch}/>
+                    <PatchSVG key={patch.name} patch={patch} onClick={() => restorePlacedPatch(patch)}/>
                 );
             })}
         </div>
@@ -26,7 +27,7 @@ const styles: {
         flexDirection: 'row',
         flexWrap: 'wrap',
         justifyContent: 'flex-start',
-        gap: '4px',
+        marginLeft: '4px',
     },
 };
 

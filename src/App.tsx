@@ -11,8 +11,13 @@ function App() {
     const [remainingIncomeTimes, setRemainingIncomeTimes] = useState<RemainingIncomeTimes>(defaultRemainingIncomeTimes);
     const [patches, setPatches] = useState(defaultPatches(defaultRemainingIncomeTimes));
     const [placedPatches, setPlacedPatches] = useState<Patch[]>([]);
-    const addPlacedPatches = (patch: Patch) => {
+
+    const addToPlacedPatches = (patch: Patch) => {
         setPlacedPatches([...placedPatches, patch]);
+    }
+    const restorePlacedPatch = (patch: Patch) => {
+        setPlacedPatches(placedPatches.filter(p => p.name !== patch.name));
+        setPatches([...patches, patch]);
     }
 
     return (
@@ -23,11 +28,11 @@ function App() {
             <PatchList patches={patches}
                        remainingIncomeTimes={remainingIncomeTimes}
                        setPatches={setPatches}
-                       addPlacedPatches={addPlacedPatches}
+                       addToPlacedPatches={addToPlacedPatches}
             />
 
-            <h1>Placed Patches</h1>
-            <PlacedPatchList placedPatches={placedPatches}/>
+            {placedPatches.length > 0 && <h1>Placed Patches</h1>}
+            <PlacedPatchList placedPatches={placedPatches} restorePlacedPatch={restorePlacedPatch}/>
 
             <hr/>
             <div style={{display: 'flex', flexWrap: 'wrap', justifyContent: 'center', alignItems: 'center'}}>

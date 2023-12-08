@@ -1,9 +1,12 @@
 import {Patch} from "./Patch";
 import React from "react";
 
-export const PatchSVG = ({patch}: {
-    patch: Patch
-}) => {
+interface PatchSVGProps {
+    patch: Patch;
+    onClick?: () => void;
+}
+
+export const PatchSVG = ({patch, onClick}: PatchSVGProps) => {
     const cellSize = 20;
     const buttonRadius = 6;
     const buttonStrokeWidth = 1;
@@ -27,6 +30,8 @@ export const PatchSVG = ({patch}: {
             width={shape[0].length * cellSize}
             height={shape.length * cellSize}
             xmlns="http://www.w3.org/2000/svg"
+            style={{margin: '4px'}}
+            onClick={onClick}
         >
             {shape.map((row: boolean[], rowIndex: number) =>
                 row.map((cell: boolean, colIndex: number) => (
