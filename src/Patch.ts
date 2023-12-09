@@ -26,16 +26,34 @@ export class Patch {
         return `${this.buttonCost}-${this.timeCost}(${this.size})+${this.buttons}`;
     }
 
-    public profit(remainingIncomeTimes: RemainingIncomeTimes): number {
-        return this.buttons * remainingIncomeTimes + 2 * this.size;
+    profit(remainingIncomeTimes: RemainingIncomeTimes): number {
+        return this.buttons * remainingIncomeTimes + 2 * this.size - this.buttonCost;
     }
 
-    public buttonPerCost(): number {
+    buttonsPerCost(): number {
         return this.buttons / (this.buttonCost + this.timeCost);
     }
 
-    public profitPerTime(remainingIncomeTimes: RemainingIncomeTimes): number {
-        return (this.profit(remainingIncomeTimes) - this.buttonCost) / this.timeCost;
+    profitPerTime(remainingIncomeTimes: RemainingIncomeTimes): number {
+        return this.profit(remainingIncomeTimes) / this.timeCost;
+    }
+
+    evaluation(remainingIncomeTimes: RemainingIncomeTimes): number {
+        return (this.buttonPerCostZScore() * remainingIncomeTimes + this.profitPerTimeZScore(remainingIncomeTimes) * (10 - remainingIncomeTimes)) / 10
+    }
+
+    private buttonPerCostZScore(): number {
+        return this.calculateZScore(patch => patch.buttonsPerCost(), Patches);
+    }
+
+    private profitPerTimeZScore(remainingIncomeTimes: RemainingIncomeTimes): number {
+        return this.calculateZScore(patch => patch.profitPerTime(remainingIncomeTimes), Patches);
+    }
+
+    private calculateZScore(valueFunction: (patch: Patch) => number, patches: Patch[]): number {
+        const mean = calculateAverage(valueFunction, patches);
+        const stdDev = calculateStandardDeviation(valueFunction, patches);
+        return (valueFunction(this) - mean) / stdDev;
     }
 }
 
@@ -47,13 +65,28 @@ type PatchShape = [
 
 export type RemainingIncomeTimes = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10;
 
-export function defaultPatches(_: RemainingIncomeTimes): Patch[] {
-    return Patches.sort((a: Patch, b: Patch) => {
-        return b.buttonPerCost() - a.buttonPerCost();
+export function sortPatches(remainingIncomeTimes: RemainingIncomeTimes, patches: Patch[]): Patch[] {
+    return [...patches].sort((a, b) => {
+        return b.evaluation(remainingIncomeTimes) - a.evaluation(remainingIncomeTimes);
     });
 }
 
-const Patches: Patch[] = [
+function calculateAverage(valueFunction: (patch: Patch) => number, patches: Patch[]): number {
+    const sum = patches.reduce((sum, patch) => sum + valueFunction(patch), 0);
+    return sum / patches.length;
+}
+
+function calculateStandardDeviation(valueFunction: (patch: Patch) => number, patches: Patch[]): number {
+    const mean = calculateAverage(valueFunction, patches);
+    const variance = patches.reduce((sum, patch) => {
+        const value = valueFunction(patch);
+        return sum + Math.pow(value - mean, 2);
+    }, 0) / patches.length;
+
+    return Math.sqrt(variance);
+}
+
+export const Patches: Patch[] = [
     new Patch([
         [true, false, false, false, false],
         [true, true, true, true, false],

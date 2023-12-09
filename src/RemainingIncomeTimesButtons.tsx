@@ -1,14 +1,20 @@
 import React from 'react';
 import {RemainingIncomeTimes} from './Patch';
 
-interface RemainingIncomeTimesButtonsProps {
+interface Props {
     setRemainingIncomeTimes: (remainingIncomeTimes: RemainingIncomeTimes) => void;
+    resortPatches: (remainingIncomeTimes: RemainingIncomeTimes) => void;
 }
 
-export function RemainingIncomeTimesButtons({setRemainingIncomeTimes}: RemainingIncomeTimesButtonsProps) {
+export function RemainingIncomeTimesButtons({setRemainingIncomeTimes, resortPatches}: Props) {
     const buttons: React.JSX.Element[] = [];
     for (let i = 9 as RemainingIncomeTimes; i >= 1; i-- as RemainingIncomeTimes) {
-        buttons.push(<button key={i} onClick={() => setRemainingIncomeTimes(i)}>{i}</button>);
+        buttons.push(<button key={i} onClick={
+            () => {
+                setRemainingIncomeTimes(i);
+                resortPatches(i);
+            }
+        }>{i}</button>);
     }
 
     return (

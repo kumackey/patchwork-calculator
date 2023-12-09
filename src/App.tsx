@@ -1,17 +1,22 @@
 import {useState} from 'react';
 import {PatchList} from './PatchList';
 import {PlacedPatchList} from './PlacedPatchList';
-import {defaultPatches, Patch, RemainingIncomeTimes} from "./Patch";
+import {sortPatches, Patch, RemainingIncomeTimes, Patches} from "./Patch";
 import {RemainingIncomeTimesButtons} from "./RemainingIncomeTimesButtons";
 
 import './App.css';
 
 function App() {
     const defaultRemainingIncomeTimes: RemainingIncomeTimes = 9;
+    const defaultPatches = sortPatches(defaultRemainingIncomeTimes, Patches);
     const [remainingIncomeTimes, setRemainingIncomeTimes] = useState<RemainingIncomeTimes>(defaultRemainingIncomeTimes);
-    const [patches, setPatches] = useState(defaultPatches(defaultRemainingIncomeTimes));
+    const [patches, setPatches] = useState(defaultPatches);
     const [placedPatches, setPlacedPatches] = useState<Patch[]>([]);
 
+    const resortPatches = (remainingIncomeTimes: RemainingIncomeTimes) => {
+        const newPatches = sortPatches(remainingIncomeTimes, patches);
+        setPatches(newPatches);
+    }
     const addToPlacedPatches = (patch: Patch) => {
         setPlacedPatches([...placedPatches, patch]);
     }
@@ -24,7 +29,8 @@ function App() {
         <div className="App">
             <h1>Patches</h1>
             <h2>Remaining Income Time</h2>
-            <RemainingIncomeTimesButtons setRemainingIncomeTimes={setRemainingIncomeTimes}/>
+            <RemainingIncomeTimesButtons setRemainingIncomeTimes={setRemainingIncomeTimes}
+                                         resortPatches={resortPatches}/>
             <PatchList patches={patches}
                        remainingIncomeTimes={remainingIncomeTimes}
                        setPatches={setPatches}
