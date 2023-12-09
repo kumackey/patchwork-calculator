@@ -41,10 +41,12 @@ function App() {
 
             <hr/>
             <div style={{display: 'flex', flexWrap: 'wrap', justifyContent: 'center', alignItems: 'center'}}>
-                <div style={{flex: 3, minWidth: '300px', padding: '10px'}}>
+                <div style={{flex: 3, minWidth: '300px', padding: '10px', textAlign: 'left'}}>
                     <h1>Formula</h1>
-                    <p>Profit = (patch size) * 2 + (buttons on patch) * (remaining income times) - (button cost)</p>
-                    <p>Profit/Time = (Profit) / (time cost)</p>
+                    <p>Profit = [patch size] * 2 + [buttons on patch] * [remaining income times] - [button cost]</p>
+                    <p>Buttons/Cost = [buttons on patch] / ([button cost] + [time cost])</p>
+                    <p>Profit/Time = [Profit] / [time cost]</p>
+                    <p>Evaluation = ([Z-score(Buttons/Cost)] * [remaining income times] + [Z-score(Profit/Time] * (10 - [remaining income times])) / 10</p>
                     <p>
                         For more details, see <a
                         href="https://boardgamegeek.com/thread/1307009/patchwork-tactic-maximizing-buttons-per-time"
