@@ -1,26 +1,14 @@
-import React, {useCallback, CSSProperties} from 'react';
+import React, {CSSProperties} from 'react';
 import {Patch, RemainingIncomeTimes} from './Patch';
-import {useDrag, useDrop} from 'react-dnd';
 import {PatchSVG} from "./PatchSVG";
-
-const PatchType = 'patch';
 
 interface PatchListProps {
     patches: Patch[];
     remainingIncomeTimes: RemainingIncomeTimes;
-    setPatches: (patches: Patch[]) => void;
-    addToPlacedPatches: (patch: Patch) => void;
+    placePatch: (patch: Patch) => void;
 }
 
-export function PatchList({remainingIncomeTimes, patches, setPatches, addToPlacedPatches}: PatchListProps) {
-    const movePatch = useCallback((dragIndex: number, hoverIndex: number) => {
-        const dragPatch = patches[dragIndex];
-        const newPatches = [...patches];
-        newPatches.splice(dragIndex, 1);
-        newPatches.splice(hoverIndex, 0, dragPatch);
-        setPatches(newPatches);
-    }, [patches, setPatches]);
-
+export function PatchList({remainingIncomeTimes, patches, placePatch}: PatchListProps) {
     return (
         <div style={styles.patchList}>
             {patches.map((patch, index) => {
@@ -30,8 +18,7 @@ export function PatchList({remainingIncomeTimes, patches, setPatches, addToPlace
                         patch={patch}
                         remainingIncomeTimes={remainingIncomeTimes}
                         index={index}
-                        movePatch={movePatch}
-                        handlePlace={handlePlaceFunc(setPatches, addToPlacedPatches, patches)}
+                        placePatch={placePatch}
                     />
                 );
             })}
@@ -39,49 +26,21 @@ export function PatchList({remainingIncomeTimes, patches, setPatches, addToPlace
     );
 }
 
-function handlePlaceFunc(setPatches: (patches: Patch[]) => void, addToPlacedPatches: (patch: Patch) => void, patches: Patch[]) {
-    return (patch: Patch) => {
-        setPatches(patches.filter(p => p.name !== patch.name));
-        addToPlacedPatches(patch);
-    }
-}
-
 interface PatchContainerProps {
     patch: Patch;
     remainingIncomeTimes: RemainingIncomeTimes;
     index: number;
-    movePatch: (from: number, to: number) => void;
-    handlePlace: (patch: Patch) => void;
+    placePatch: (patch: Patch) => void;
 }
 
-function PatchContainer({patch, remainingIncomeTimes, index, movePatch, handlePlace}: PatchContainerProps) {
-    const [, dragRef] = useDrag({
-        type: PatchType,
-        item: {type: PatchType, index},
-    });
-
-    const [, dropRef] = useDrop({
-        accept: PatchType,
-        hover(item: {
-            type: string;
-            index: number
-        }, monitor) {
-            if (item.index !== index) {
-                movePatch(item.index, index);
-                item.index = index;
-            }
-        },
-    });
-
+function PatchContainer({patch, remainingIncomeTimes, index, placePatch}: PatchContainerProps) {
     const backgroundColor = generateRandomColor(patch.name);
     const patchStyle = {...styles.patchContainer, background: backgroundColor};
 
     return (
-        <div ref={(node) => dragRef(dropRef(node))} style={patchStyle}>
+        <div style={patchStyle}>
             <p><b>{patch.name}</b>
-                <button style={{marginLeft: '4px'}} onClick={() => handlePlace(patch)}>
-                    ×
-                </button>
+                <button style={{marginLeft: '4px'}} onClick={() => placePatch(patch)}>×</button>
             </p>
             <p>🔵{patch.buttonCost} ⌛{patch.timeCost}</p>
             <p>Profit: {patch.profit(remainingIncomeTimes)}</p>

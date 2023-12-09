@@ -14,10 +14,11 @@ function App() {
     const [placedPatches, setPlacedPatches] = useState<Patch[]>([]);
 
     const resortPatches = (remainingIncomeTimes: RemainingIncomeTimes) => {
-        const newPatches = sortPatches(remainingIncomeTimes, patches);
-        setPatches(newPatches);
+        setRemainingIncomeTimes(remainingIncomeTimes);
+        setPatches(sortPatches(remainingIncomeTimes, patches));
     }
-    const addToPlacedPatches = (patch: Patch) => {
+    const placePatch = (patch: Patch) => {
+        setPatches(patches.filter(p => p.name !== patch.name));
         setPlacedPatches([...placedPatches, patch]);
     }
     const restorePlacedPatch = (patch: Patch) => {
@@ -29,12 +30,10 @@ function App() {
         <div className="App">
             <h1>Patches</h1>
             <h2>Remaining Income Time</h2>
-            <RemainingIncomeTimesButtons setRemainingIncomeTimes={setRemainingIncomeTimes}
-                                         resortPatches={resortPatches}/>
+            <RemainingIncomeTimesButtons resortPatches={resortPatches}/>
             <PatchList patches={patches}
                        remainingIncomeTimes={remainingIncomeTimes}
-                       setPatches={setPatches}
-                       addToPlacedPatches={addToPlacedPatches}
+                       placePatch={placePatch}
             />
 
             {placedPatches.length > 0 && <h1>Placed Patches</h1>}
