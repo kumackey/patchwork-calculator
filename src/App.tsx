@@ -29,7 +29,7 @@ function App() {
     return (
         <div className="App">
             <h1>Patches</h1>
-            <h2>Remaining Income Time</h2>
+            <h2>Remaining Income Time ({remainingIncomeTimes})</h2>
             <RemainingIncomeTimesButtons resortPatches={resortPatches}/>
             <PatchList patches={patches}
                        remainingIncomeTimes={remainingIncomeTimes}
