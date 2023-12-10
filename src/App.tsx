@@ -49,8 +49,8 @@ function App() {
                     <p>Evaluation = ([Z-score(Buttons/Cost)] * [remaining income times] + [Z-score(Profit/Time] * (10 - [remaining income times])) / 10</p>
                     <p>
                         For more details, see <a
-                        href="https://boardgamegeek.com/thread/1307009/patchwork-tactic-maximizing-buttons-per-time"
-                        target="_blank">A Patchwork Tactic: Maximizing Buttons Per Time</a>.
+                        href="https://bodoge.hoobby.net/games/patchwork/strategies/44084"
+                        target="_blank">強いパッチはどれか？</a> ( written in Japanese ).
                     </p>
                     <p>Contact: <a href="https://twitter.com/kumackey_" target="_blank">@kumackey_</a></p>
                 </div>
