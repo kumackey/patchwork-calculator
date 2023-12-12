@@ -46,7 +46,6 @@ function App() {
                     <p>Profit = [patch size] * 2 + [buttons on patch] * [remaining income times] - [button cost]</p>
                     <p>Buttons/Cost = [buttons on patch] / ([button cost] + [time cost])</p>
                     <p>Profit/Time = [Profit] / [time cost]</p>
-                    <p>Evaluation = ([Z-score(Buttons/Cost)] * [remaining income times] + [Z-score(Profit/Time] * (10 - [remaining income times])) / 10</p>
                     <p>
                         For more details, see <a
                         href="https://bodoge.hoobby.net/games/patchwork/strategies/44084"

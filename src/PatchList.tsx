@@ -42,12 +42,12 @@ function PatchContainer({patch, remainingIncomeTimes, index, placePatch}: PatchC
             <p><b>{patch.name}</b>
                 <button style={{marginLeft: '4px'}} onClick={() => placePatch(patch)}>×</button>
             </p>
+            <PatchSVG patch={patch}/>
             <p>🔵{patch.buttonCost} ⌛{patch.timeCost}</p>
             <p>Profit: {patch.profit(remainingIncomeTimes)}</p>
             <p>Buttons/Cost: {floor(patch.buttonsPerCost())}</p>
             <p>Profit/Time: {floor(patch.profitPerTime(remainingIncomeTimes))}</p>
             <p><b>Evaluation: {floor(patch.evaluation(remainingIncomeTimes))}</b></p>
-            <PatchSVG patch={patch}/>
         </div>
     );
 }

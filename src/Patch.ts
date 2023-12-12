@@ -39,7 +39,8 @@ export class Patch {
     }
 
     evaluation(remainingIncomeTimes: RemainingIncomeTimes): number {
-        return (this.buttonPerCostZScore() * remainingIncomeTimes + this.profitPerTimeZScore(remainingIncomeTimes) * (10 - remainingIncomeTimes)) / 10
+        const buttonCostWeighting = buttonCostWeightings[remainingIncomeTimes];
+        return this.buttonPerCostZScore() * buttonCostWeighting + this.profitPerTimeZScore(remainingIncomeTimes) * (1 - buttonCostWeighting);
     }
 
     private buttonPerCostZScore(): number {
@@ -57,13 +58,25 @@ export class Patch {
     }
 }
 
+const buttonCostWeightings: { [key in RemainingIncomeTimes]: number } = {
+    1: 0,
+    2: 0.0625,
+    3: 0.125,
+    4: 0.25,
+    5: 0.5,
+    6: 0.75,
+    7: 0.875,
+    8: 0.9375,
+    9: 0.96875,
+};
+
 type PatchShape = [
     [boolean, boolean, boolean, boolean, boolean],
     [boolean, boolean, boolean, boolean, boolean],
     [boolean, boolean, boolean, boolean, boolean]
 ];
 
-export type RemainingIncomeTimes = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10;
+export type RemainingIncomeTimes = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9;
 
 export function sortPatches(remainingIncomeTimes: RemainingIncomeTimes, patches: Patch[]): Patch[] {
     return [...patches].sort((a, b) => {
