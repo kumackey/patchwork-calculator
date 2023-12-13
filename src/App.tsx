@@ -28,30 +28,11 @@ function App() {
 
     return (
         <div className="App">
-            <h1>Patches</h1>
-            <h2>Remaining Income Time ({remainingIncomeTimes})</h2>
-            <RemainingIncomeTimesButtons resortPatches={resortPatches}/>
-            <PatchList patches={patches}
-                       remainingIncomeTimes={remainingIncomeTimes}
-                       placePatch={placePatch}
-            />
-
-            {placedPatches.length > 0 && <h1>Placed Patches</h1>}
-            <PlacedPatchList placedPatches={placedPatches} restorePlacedPatch={restorePlacedPatch}/>
-
-            <hr/>
             <div style={{display: 'flex', flexWrap: 'wrap', justifyContent: 'center', alignItems: 'center'}}>
-                <div style={{flex: 3, minWidth: '300px', padding: '10px', textAlign: 'left'}}>
-                    <h1>Formula</h1>
-                    <p>Profit = [patch size] * 2 + [buttons on patch] * [remaining income times] - [button cost]</p>
-                    <p>Buttons/Cost = [buttons on patch] / ([button cost] + [time cost])</p>
-                    <p>Profit/Time = [Profit] / [time cost]</p>
-                    <p>
-                        For more details, see <a
-                        href="https://bodoge.hoobby.net/games/patchwork/strategies/44084"
-                        target="_blank">強いパッチはどれか？</a> ( written in Japanese ).
-                    </p>
-                    <p>Contact: <a href="https://twitter.com/kumackey_" target="_blank">@kumackey_</a></p>
+                <div style={{flex: 3, minWidth: '300px', padding: '10px', textAlign: 'center'}}>
+                    <h1>Patchwork Calculator</h1>
+                    <h2>Remaining Income Time ({remainingIncomeTimes})</h2>
+                    <RemainingIncomeTimesButtons resortPatches={resortPatches}/>
                 </div>
 
                 <div style={{flex: 0, padding: '10px', minWidth: '300px'}}>
@@ -75,7 +56,25 @@ function App() {
                     </iframe>
                 </div>
             </div>
+            <PatchList patches={patches}
+                       remainingIncomeTimes={remainingIncomeTimes}
+                       placePatch={placePatch}
+            />
 
+            {placedPatches.length > 0 && <h1>Placed Patches</h1>}
+            <PlacedPatchList placedPatches={placedPatches} restorePlacedPatch={restorePlacedPatch}/>
+
+            <hr/>
+            <h1>Formula</h1>
+            <p>Profit = [patch size] * 2 + [buttons on patch] * [remaining income times] - [button cost]</p>
+            <p>Buttons/Cost = [buttons on patch] / ([button cost] + [time cost])</p>
+            <p>Profit/Time = [Profit] / [time cost]</p>
+            <p>
+                For more details, see <a
+                href="https://bodoge.hoobby.net/games/patchwork/strategies/44084"
+                target="_blank">強いパッチはどれか？</a> ( written in Japanese ).
+            </p>
+            <p>Contact: <a href="https://twitter.com/kumackey_" target="_blank">@kumackey_</a></p>
         </div>
     )
         ;
