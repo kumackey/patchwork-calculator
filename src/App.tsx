@@ -31,8 +31,8 @@ function App() {
             <div style={{display: 'flex', flexWrap: 'wrap', justifyContent: 'center', alignItems: 'center'}}>
                 <div style={{flex: 3, minWidth: '300px', padding: '10px', textAlign: 'center'}}>
                     <h1>Patchwork Calculator</h1>
-                    <h2>Remaining Income Time ({remainingIncomeTimes})</h2>
-                    <RemainingIncomeTimesButtons resortPatches={resortPatches}/>
+                    <h2>Remaining Income Time</h2>
+                    <RemainingIncomeTimesButtons resortPatches={resortPatches} remainingIncomeTimes={remainingIncomeTimes}/>
                 </div>
 
                 <div style={{flex: 0, padding: '10px', minWidth: '300px'}}>

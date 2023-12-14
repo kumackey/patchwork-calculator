@@ -2,18 +2,48 @@ import React from 'react';
 import {RemainingIncomeTimes} from './Patch';
 
 interface Props {
+    remainingIncomeTimes: RemainingIncomeTimes;
     resortPatches: (remainingIncomeTimes: RemainingIncomeTimes) => void;
 }
 
-export function RemainingIncomeTimesButtons({resortPatches}: Props) {
+export function RemainingIncomeTimesButtons({remainingIncomeTimes, resortPatches}: Props) {
     const buttons: React.JSX.Element[] = [];
     for (let i = 9 as RemainingIncomeTimes; i >= 1; i-- as RemainingIncomeTimes) {
-        buttons.push(<button key={i} onClick={() => {
-            resortPatches(i)
-        }}>{i}</button>);
+        const isSelected = remainingIncomeTimes === i;
+        buttons.push(
+            <button
+                key={i}
+                style={isSelected ? selectedButtonStyle : buttonStyle}
+                onClick={() => resortPatches(i)}
+            >
+                {i}
+            </button>
+        );
     }
 
     return (
-        <div className="button-group">{buttons}</div>
+        <div style={buttonGroupStyle}>{buttons}</div>
     );
 }
+
+const buttonGroupStyle: React.CSSProperties = {
+    display: 'flex',
+    justifyContent: 'center',
+    marginBottom: '20px',
+};
+
+const buttonStyle: React.CSSProperties = {
+    backgroundColor: '#f0f0f0',
+    border: '1px solid #ddd',
+    padding: '10px 15px',
+    cursor: 'pointer',
+    transition: 'background-color 0.3s, transform 0.2s',
+};
+
+const selectedButtonStyle: React.CSSProperties = {
+    ...buttonStyle,
+    backgroundColor: '#55acee',
+    color: 'white',
+    transform: 'scale(1.1)',
+};
+
