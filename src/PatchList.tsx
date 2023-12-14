@@ -1,24 +1,25 @@
 import React, {CSSProperties} from 'react';
-import {Patch, RemainingIncomeTimes} from './Patch';
+import {Patch, RemainingIncomeTimes, SortType} from './Patch';
 import {PatchSVG} from "./PatchSVG";
 
 interface PatchListProps {
     patches: Patch[];
     remainingIncomeTimes: RemainingIncomeTimes;
     placePatch: (patch: Patch) => void;
+    sortType: SortType;
 }
 
-export function PatchList({remainingIncomeTimes, patches, placePatch}: PatchListProps) {
+export function PatchList({remainingIncomeTimes, patches, placePatch, sortType}: PatchListProps) {
     return (
         <div style={styles.patchList}>
-            {patches.map((patch, index) => {
+            {patches.map((patch) => {
                 return (
                     <PatchContainer
                         key={patch.name}
                         patch={patch}
                         remainingIncomeTimes={remainingIncomeTimes}
-                        index={index}
                         placePatch={placePatch}
+                        sortType={sortType}
                     />
                 );
             })}
@@ -29,11 +30,11 @@ export function PatchList({remainingIncomeTimes, patches, placePatch}: PatchList
 interface PatchContainerProps {
     patch: Patch;
     remainingIncomeTimes: RemainingIncomeTimes;
-    index: number;
     placePatch: (patch: Patch) => void;
+    sortType: SortType;
 }
 
-function PatchContainer({patch, remainingIncomeTimes, index, placePatch}: PatchContainerProps) {
+function PatchContainer({patch, remainingIncomeTimes, placePatch, sortType}: PatchContainerProps) {
     const backgroundColor = generateRandomColor(patch.name);
     const patchStyle = {...styles.patchContainer, background: backgroundColor};
 
@@ -44,10 +45,14 @@ function PatchContainer({patch, remainingIncomeTimes, index, placePatch}: PatchC
             </p>
             <PatchSVG patch={patch}/>
             <p>🔵{patch.buttonCost} ⌛{patch.timeCost}</p>
-            <p>Profit: {patch.profit(remainingIncomeTimes)}</p>
+            <p style={sortType === 'profit' ? emphasizedStyle : undefined}>
+                Profit: {patch.profit(remainingIncomeTimes)}
+            </p>
             <p>Buttons/Cost: {floor(patch.buttonsPerCost())}</p>
             <p>Profit/Time: {floor(patch.profitPerTime(remainingIncomeTimes))}</p>
-            <p><b>Evaluation: {floor(patch.evaluation(remainingIncomeTimes))}</b></p>
+            <p style={sortType === 'evaluation' ? emphasizedStyle : undefined}>
+                Evaluation: {floor(patch.evaluation(remainingIncomeTimes))}
+            </p>
         </div>
     );
 }
@@ -102,3 +107,5 @@ const styles: {
         border: '1px solid black',
     },
 };
+
+const emphasizedStyle: React.CSSProperties = {fontWeight: 'bold'};

@@ -1,22 +1,32 @@
 import {useState} from 'react';
 import {PatchList} from './PatchList';
 import {PlacedPatchList} from './PlacedPatchList';
-import {sortPatches, Patch, RemainingIncomeTimes, Patches} from "./Patch";
+import {sortPatchesByEvaluation, Patch, RemainingIncomeTimes, Patches, SortType, sortPatchesByProfit} from "./Patch";
 import {RemainingIncomeTimesButtons} from "./RemainingIncomeTimesButtons";
+import {SortTypeButtons} from "./SortTypeButtons";
 
 import './App.css';
 
 function App() {
     const defaultRemainingIncomeTimes: RemainingIncomeTimes = 9;
-    const defaultPatches = sortPatches(defaultRemainingIncomeTimes, Patches);
+    const defaultPatches = sortPatchesByEvaluation(defaultRemainingIncomeTimes, Patches);
     const [remainingIncomeTimes, setRemainingIncomeTimes] = useState<RemainingIncomeTimes>(defaultRemainingIncomeTimes);
     const [patches, setPatches] = useState(defaultPatches);
     const [placedPatches, setPlacedPatches] = useState<Patch[]>([]);
+    const [sortType, setSortType] = useState<SortType>('evaluation');
 
-    const resortPatches = (remainingIncomeTimes: RemainingIncomeTimes) => {
-        setRemainingIncomeTimes(remainingIncomeTimes);
-        setPatches(sortPatches(remainingIncomeTimes, patches));
+    const resortPatches = (remainingIncomeTimes: RemainingIncomeTimes, sortType: SortType) => {
+        switch (sortType) {
+            case 'evaluation':
+                setPatches(sortPatchesByEvaluation(remainingIncomeTimes, patches));
+                break;
+            case 'profit':
+                setPatches(sortPatchesByProfit(remainingIncomeTimes, patches));
+                break;
+        }
     }
+
+
     const placePatch = (patch: Patch) => {
         setPatches(patches.filter(p => p.name !== patch.name));
         setPlacedPatches([...placedPatches, patch]);
@@ -31,8 +41,24 @@ function App() {
             <div style={{display: 'flex', flexWrap: 'wrap', justifyContent: 'center', alignItems: 'center'}}>
                 <div style={{flex: 3, minWidth: '300px', padding: '10px', textAlign: 'center'}}>
                     <h1>Patchwork Calculator</h1>
-                    <h2>Remaining Income Time</h2>
-                    <RemainingIncomeTimesButtons resortPatches={resortPatches} remainingIncomeTimes={remainingIncomeTimes}/>
+                    <div style={containerStyle}>
+                        <div style={itemStyle}>
+                            <h2>Remaining Income Time</h2>
+                            <RemainingIncomeTimesButtons
+                                remainingIncomeTimes={remainingIncomeTimes}
+                                setRemainingIncomeTimes={setRemainingIncomeTimes}
+                                resortPatches={(remainingIncomeTimes) => resortPatches(remainingIncomeTimes, sortType)}
+                            />
+                        </div>
+                        <div style={itemStyle}>
+                            <h2>Sort Type</h2>
+                            <SortTypeButtons
+                                sortType={sortType}
+                                resortPatches={(sortType) => resortPatches(remainingIncomeTimes, sortType)}
+                                setSortType={setSortType}
+                            />
+                        </div>
+                    </div>
                 </div>
 
                 <div style={{flex: 0, padding: '10px', minWidth: '300px'}}>
@@ -59,6 +85,7 @@ function App() {
             <PatchList patches={patches}
                        remainingIncomeTimes={remainingIncomeTimes}
                        placePatch={placePatch}
+                       sortType={sortType}
             />
 
             {placedPatches.length > 0 && <h1>Placed Patches</h1>}
@@ -74,10 +101,23 @@ function App() {
                 href="https://bodoge.hoobby.net/games/patchwork/strategies/44084"
                 target="_blank">強いパッチはどれか？</a> ( written in Japanese ).
             </p>
-            <p>Contact: <a href="https://twitter.com/kumackey_" target="_blank">@kumackey_</a></p>
+            <p>Contact: Github: <a href="https://github.com/kumackey/patchwork-calculator"
+                                   target="_blank">kumackey/patchwork-calculator</a>
+                , Twitter: <a href="https://twitter.com/kumackey_" target="_blank">@kumackey_</a></p>
         </div>
-    )
-        ;
+    );
 }
+
+const containerStyle: React.CSSProperties = {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    flexWrap: 'wrap',
+};
+
+const itemStyle: React.CSSProperties = {
+    flexBasis: '48%',
+    marginBottom: '4px',
+};
 
 export default App;

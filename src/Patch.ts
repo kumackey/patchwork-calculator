@@ -78,9 +78,17 @@ type PatchShape = [
 
 export type RemainingIncomeTimes = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9;
 
-export function sortPatches(remainingIncomeTimes: RemainingIncomeTimes, patches: Patch[]): Patch[] {
+export type SortType = 'evaluation' | 'profit';
+
+export function sortPatchesByEvaluation(remainingIncomeTimes: RemainingIncomeTimes, patches: Patch[]): Patch[] {
     return [...patches].sort((a, b) => {
         return b.evaluation(remainingIncomeTimes) - a.evaluation(remainingIncomeTimes);
+    });
+}
+
+export function sortPatchesByProfit(remainingIncomeTimes: RemainingIncomeTimes, patches: Patch[]): Patch[] {
+    return [...patches].sort((a, b) => {
+        return b.profit(remainingIncomeTimes) - a.profit(remainingIncomeTimes);
     });
 }
 

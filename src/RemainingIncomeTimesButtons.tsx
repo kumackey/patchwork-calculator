@@ -1,12 +1,18 @@
 import React from 'react';
 import {RemainingIncomeTimes} from './Patch';
+import {SortType} from "./Patch";
 
-interface Props {
+interface RemainingIncomeTimesButtonsProps {
     remainingIncomeTimes: RemainingIncomeTimes;
     resortPatches: (remainingIncomeTimes: RemainingIncomeTimes) => void;
+    setRemainingIncomeTimes: (remainingIncomeTimes: RemainingIncomeTimes) => void;
 }
 
-export function RemainingIncomeTimesButtons({remainingIncomeTimes, resortPatches}: Props) {
+export function RemainingIncomeTimesButtons({
+                                                remainingIncomeTimes,
+                                                resortPatches,
+                                                setRemainingIncomeTimes,
+                                            }: RemainingIncomeTimesButtonsProps) {
     const buttons: React.JSX.Element[] = [];
     for (let i = 9 as RemainingIncomeTimes; i >= 1; i-- as RemainingIncomeTimes) {
         const isSelected = remainingIncomeTimes === i;
@@ -14,7 +20,10 @@ export function RemainingIncomeTimesButtons({remainingIncomeTimes, resortPatches
             <button
                 key={i}
                 style={isSelected ? selectedButtonStyle : buttonStyle}
-                onClick={() => resortPatches(i)}
+                onClick={() => {
+                    setRemainingIncomeTimes(i);
+                    resortPatches(i);
+                }}
             >
                 {i}
             </button>
