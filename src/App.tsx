@@ -38,48 +38,23 @@ function App() {
 
     return (
         <div className="App">
-            <div style={{display: 'flex', flexWrap: 'wrap', justifyContent: 'center', alignItems: 'center'}}>
-                <div style={{flex: 3, minWidth: '300px', padding: '10px', textAlign: 'center'}}>
-                    <h1>Patchwork Calculator</h1>
-                    <div style={containerStyle}>
-                        <div style={itemStyle}>
-                            <h2>Remaining Income Time</h2>
-                            <RemainingIncomeTimesButtons
-                                remainingIncomeTimes={remainingIncomeTimes}
-                                setRemainingIncomeTimes={setRemainingIncomeTimes}
-                                resortPatches={(remainingIncomeTimes) => resortPatches(remainingIncomeTimes, sortType)}
-                            />
-                        </div>
-                        <div style={itemStyle}>
-                            <h2>Sort Type</h2>
-                            <SortTypeButtons
-                                sortType={sortType}
-                                resortPatches={(sortType) => resortPatches(remainingIncomeTimes, sortType)}
-                                setSortType={setSortType}
-                            />
-                        </div>
-                    </div>
+            <h1>Patchwork Calculator</h1>
+            <div style={containerStyle}>
+                <div style={itemStyle}>
+                    <h2>Remaining Income Time</h2>
+                    <RemainingIncomeTimesButtons
+                        remainingIncomeTimes={remainingIncomeTimes}
+                        setRemainingIncomeTimes={setRemainingIncomeTimes}
+                        resortPatches={(remainingIncomeTimes) => resortPatches(remainingIncomeTimes, sortType)}
+                    />
                 </div>
-
-                <div style={{flex: 0, padding: '10px', minWidth: '300px'}}>
-                    <iframe
-                        sandbox="allow-popups allow-scripts allow-modals allow-forms allow-same-origin"
-                        style={{width: '120px', height: '240px'}}
-                        marginWidth={0}
-                        marginHeight={0}
-                        scrolling="no"
-                        frameBorder="0"
-                        src="//rcm-fe.amazon-adsystem.com/e/cm?lt1=_blank&bc1=000000&IS2=1&bg1=FFFFFF&fc1=000000&lc1=0000FF&t=kumackey06-22&language=en_US&o=9&p=8&l=as4&m=amazon&f=ifr&ref=as_ss_li_til&asins=B00RCCAPPE&linkId=359f2032501a4ed6c442a68d126ef9df">
-                    </iframe>
-                    <iframe
-                        sandbox="allow-popups allow-scripts allow-modals allow-forms allow-same-origin"
-                        style={{width: '120px', height: '240px'}}
-                        marginWidth={0}
-                        marginHeight={0}
-                        scrolling="no"
-                        frameBorder="0"
-                        src="//rcm-fe.amazon-adsystem.com/e/cm?lt1=_blank&bc1=000000&IS2=1&bg1=FFFFFF&fc1=000000&lc1=0000FF&t=kumackey06-22&language=ja_JP&o=9&p=8&l=as4&m=amazon&f=ifr&ref=as_ss_li_til&asins=B00WHQZQ0Y&linkId=c5db24b79a3329866fdc34ba02223294">
-                    </iframe>
+                <div style={itemStyle}>
+                    <h2>Sort Type</h2>
+                    <SortTypeButtons
+                        sortType={sortType}
+                        resortPatches={(sortType) => resortPatches(remainingIncomeTimes, sortType)}
+                        setSortType={setSortType}
+                    />
                 </div>
             </div>
             <PatchList patches={patches}
