@@ -1,5 +1,4 @@
 import React from 'react';
-import {RemainingIncomeTimes} from './Patch';
 import {SortType} from "./Patch";
 
 interface SortTypeButtonsProps {
@@ -15,7 +14,7 @@ export function SortTypeButtons({
                                 }: SortTypeButtonsProps) {
     return (
         <div style={buttonGroupStyle}>
-            {sortButtons.map(({type: type, label: label}) => (
+            {sortButtons.map(({type, label}) => (
                 <button
                     key={type}
                     style={sortType === type ? selectedButtonStyle : buttonStyle}

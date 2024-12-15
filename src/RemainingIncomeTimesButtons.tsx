@@ -1,6 +1,5 @@
 import React from 'react';
 import {RemainingIncomeTimes} from './Patch';
-import {SortType} from "./Patch";
 
 interface RemainingIncomeTimesButtonsProps {
     remainingIncomeTimes: RemainingIncomeTimes;

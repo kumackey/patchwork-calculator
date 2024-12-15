@@ -74,11 +74,11 @@ function App() {
             <p>
                 For more details, see <a
                 href="https://bodoge.hoobby.net/games/patchwork/strategies/44084"
-                target="_blank">強いパッチはどれか？</a> ( written in Japanese ).
+                target="_blank" rel="noreferrer" >強いパッチはどれか？</a> ( written in Japanese ).
             </p>
             <p>Contact: Github: <a href="https://github.com/kumackey/patchwork-calculator"
-                                   target="_blank">kumackey/patchwork-calculator</a>
-                , Twitter: <a href="https://twitter.com/kumackey_" target="_blank">@kumackey_</a></p>
+                                   target="_blank" rel="noreferrer" >kumackey/patchwork-calculator</a>
+                , Twitter: <a href="https://twitter.com/kumackey_" target="_blank" rel="noreferrer" >@kumackey_</a></p>
         </div>
     );
 }
