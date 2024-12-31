@@ -7,10 +7,3 @@ https://patchwork.kumackey.com/
 ```bash
 npm run start
 ```
-
-## deploy
-
-```bash
-npm run deploy
-rm -rf build/
-```
