@@ -10,24 +10,33 @@ interface PatchListProps {
 export function PlacedPatchList({placedPatches, restorePlacedPatch}: PatchListProps) {
     return (
         <div style={styles.archivedList}>
-            {placedPatches.map((patch: Patch) => {
-                return (
-                    <PatchSVG key={patch.name} patch={patch} onClick={() => restorePlacedPatch(patch)}/>
-                );
-            })}
+            {placedPatches.map((patch: Patch) => (
+                <div
+                    key={patch.name}
+                    className="placed-item"
+                    style={styles.placedItem}
+                    title={`${patch.name} — click to restore`}
+                >
+                    <PatchSVG patch={patch} onClick={() => restorePlacedPatch(patch)}/>
+                </div>
+            ))}
         </div>
     );
 }
 
-const styles: {
-    [key: string]: CSSProperties
-} = {
+const styles: {[key: string]: CSSProperties} = {
     archivedList: {
         display: 'flex',
         flexDirection: 'row',
         flexWrap: 'wrap',
-        justifyContent: 'flex-start',
-        marginLeft: '4px',
+        gap: '8px',
+    },
+    placedItem: {
+        backgroundColor: '#ffffff',
+        borderRadius: '8px',
+        boxShadow: '0 1px 3px rgba(0,0,0,0.06)',
+        opacity: 0.7,
+        cursor: 'pointer',
+        overflow: 'hidden',
     },
 };
-

@@ -26,7 +26,6 @@ function App() {
         }
     }
 
-
     const placePatch = (patch: Patch) => {
         setPatches(patches.filter(p => p.name !== patch.name));
         setPlacedPatches([...placedPatches, patch]);
@@ -38,18 +37,18 @@ function App() {
 
     return (
         <div className="App">
-            <h1>Patchwork Calculator</h1>
-            <div style={containerStyle}>
-                <div style={itemStyle}>
-                    <h2>Remaining Income Time</h2>
+            <h1 className="App-title">Patchwork Calculator</h1>
+            <div className="App-controls">
+                <div className="App-control-card">
+                    <div className="App-control-label">Remaining Income Time</div>
                     <RemainingIncomeTimesButtons
                         remainingIncomeTimes={remainingIncomeTimes}
                         setRemainingIncomeTimes={setRemainingIncomeTimes}
                         resortPatches={(remainingIncomeTimes) => resortPatches(remainingIncomeTimes, sortType)}
                     />
                 </div>
-                <div style={itemStyle}>
-                    <h2>Sort Type</h2>
+                <div className="App-control-card">
+                    <div className="App-control-label">Sort Type</div>
                     <SortTypeButtons
                         sortType={sortType}
                         resortPatches={(sortType) => resortPatches(remainingIncomeTimes, sortType)}
@@ -57,42 +56,36 @@ function App() {
                     />
                 </div>
             </div>
+
+            <h2 className="App-section-title">Available Patches</h2>
             <PatchList patches={patches}
                        remainingIncomeTimes={remainingIncomeTimes}
                        placePatch={placePatch}
                        sortType={sortType}
             />
 
-            {placedPatches.length > 0 && <h1>Placed Patches</h1>}
+            {placedPatches.length > 0 && <h2 className="App-section-title" style={{marginTop: '32px'}}>Placed Patches</h2>}
             <PlacedPatchList placedPatches={placedPatches} restorePlacedPatch={restorePlacedPatch}/>
 
-            <hr/>
-            <h1>Formula</h1>
-            <p>Profit = [patch size] * 2 + [buttons on patch] * [remaining income times] - [button cost]</p>
-            <p>Buttons/Cost = [buttons on patch] / ([button cost] + [time cost])</p>
-            <p>Profit/Time = [Profit] / [time cost]</p>
-            <p>
-                For more details, see <a
-                href="https://bodoge.hoobby.net/games/patchwork/strategies/44084"
-                target="_blank" rel="noreferrer" >強いパッチはどれか？</a> ( written in Japanese ).
+            <div className="App-formula">
+                <div className="App-formula-title">Formula</div>
+                <p>Profit = [patch size] * 2 + [buttons on patch] * [remaining income times] - [button cost]</p>
+                <p>Buttons/Cost = [buttons on patch] / ([button cost] + [time cost])</p>
+                <p>Profit/Time = [Profit] / [time cost]</p>
+                <p style={{fontFamily: 'inherit', marginTop: '12px'}}>
+                    For more details, see <a
+                    href="https://bodoge.hoobby.net/games/patchwork/strategies/44084"
+                    target="_blank" rel="noreferrer">強いパッチはどれか？</a> (written in Japanese).
+                </p>
+            </div>
+            <p className="App-footer">
+                Github: <a href="https://github.com/kumackey/patchwork-calculator"
+                           target="_blank" rel="noreferrer">kumackey/patchwork-calculator</a>
+                {' · '}
+                Twitter: <a href="https://twitter.com/kumackey_" target="_blank" rel="noreferrer">@kumackey_</a>
             </p>
-            <p>Contact: Github: <a href="https://github.com/kumackey/patchwork-calculator"
-                                   target="_blank" rel="noreferrer" >kumackey/patchwork-calculator</a>
-                , Twitter: <a href="https://twitter.com/kumackey_" target="_blank" rel="noreferrer" >@kumackey_</a></p>
         </div>
     );
 }
-
-const containerStyle: React.CSSProperties = {
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    flexWrap: 'wrap',
-};
-
-const itemStyle: React.CSSProperties = {
-    flexBasis: '48%',
-    marginBottom: '4px',
-};
 
 export default App;
