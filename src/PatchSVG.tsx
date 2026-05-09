@@ -4,16 +4,15 @@ import React from "react";
 interface PatchSVGProps {
     patch: Patch;
     onClick?: () => void;
+    fillColor?: string;
 }
 
-export const PatchSVG = ({patch, onClick}: PatchSVGProps) => {
+export const PatchSVG = ({patch, onClick, fillColor = '#334155'}: PatchSVGProps) => {
     const cellSize = 20;
-    const buttonRadius = 6;
-    const buttonStrokeWidth = 1;
+    const buttonRadius = 5;
 
     const shape = patch.shape;
 
-    // determines the position of the buttons
     const buttonPositions = [];
     let buttonsPlaced = 0;
     for (let rowIndex = 0; rowIndex < shape.length; rowIndex++) {
@@ -30,7 +29,7 @@ export const PatchSVG = ({patch, onClick}: PatchSVGProps) => {
             width={shape[0].length * cellSize}
             height={shape.length * cellSize}
             xmlns="http://www.w3.org/2000/svg"
-            style={{margin: '4px'}}
+            style={{margin: '4px', cursor: onClick ? 'pointer' : 'default'}}
             onClick={onClick}
         >
             {shape.map((row: boolean[], rowIndex: number) =>
@@ -41,23 +40,20 @@ export const PatchSVG = ({patch, onClick}: PatchSVGProps) => {
                         y={rowIndex * cellSize}
                         width={cellSize}
                         height={cellSize}
-                        fill={cell ? 'black' : 'none'} // patch color
+                        fill={cell ? fillColor : 'rgba(0,0,0,0.04)'}
                         stroke="none"
                     />
                 ))
             )}
-            {buttonPositions.map((position: {
-                x: number;
-                y: number
-            }, index: number) => (
+            {buttonPositions.map((position: {x: number; y: number}, index: number) => (
                 <circle
                     key={`button-${index}`}
                     cx={position.x}
                     cy={position.y}
                     r={buttonRadius}
-                    fill="#55acee" // button color on patch
-                    stroke="black"
-                    strokeWidth={buttonStrokeWidth}
+                    fill="rgba(255,255,255,0.85)"
+                    stroke="rgba(0,0,0,0.25)"
+                    strokeWidth={1}
                 />
             ))}
         </svg>
