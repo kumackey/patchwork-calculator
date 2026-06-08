@@ -1,276 +1,477 @@
 export class Patch {
-    shape: PatchShape;
-    buttonCost: number;
-    timeCost: number;
-    buttons: number;
+  shape: PatchShape;
+  buttonCost: number;
+  timeCost: number;
+  buttons: number;
 
-    size: number;
-    name: string;
+  size: number;
+  name: string;
 
-    constructor(shape: PatchShape, buttonCost: number, timeCost: number, buttonsEarned: number) {
-        this.shape = shape;
-        this.buttonCost = buttonCost;
-        this.timeCost = timeCost;
-        this.buttons = buttonsEarned;
+  constructor(
+    shape: PatchShape,
+    buttonCost: number,
+    timeCost: number,
+    buttonsEarned: number,
+  ) {
+    this.shape = shape;
+    this.buttonCost = buttonCost;
+    this.timeCost = timeCost;
+    this.buttons = buttonsEarned;
 
-        // calculate in advance
-        this.size = this.calculateSize();
-        this.name = this.generateName();
-    }
+    // calculate in advance
+    this.size = this.calculateSize();
+    this.name = this.generateName();
+  }
 
-    private calculateSize(): number {
-        return this.shape.reduce((sum, row) => sum + row.filter(cell => cell).length, 0);
-    }
+  private calculateSize(): number {
+    return this.shape.reduce(
+      (sum, row) => sum + row.filter((cell) => cell).length,
+      0,
+    );
+  }
 
-    private generateName(): string {
-        return `${this.buttonCost}-${this.timeCost}(${this.size})+${this.buttons}`;
-    }
+  private generateName(): string {
+    return `${this.buttonCost}-${this.timeCost}(${this.size})+${this.buttons}`;
+  }
 
-    profit(remainingIncomeTimes: RemainingIncomeTimes): number {
-        return this.buttons * remainingIncomeTimes + 2 * this.size - this.buttonCost;
-    }
+  profit(remainingIncomeTimes: RemainingIncomeTimes): number {
+    return (
+      this.buttons * remainingIncomeTimes + 2 * this.size - this.buttonCost
+    );
+  }
 
-    buttonsPerCost(): number {
-        return this.buttons / (this.buttonCost + this.timeCost);
-    }
+  buttonsPerCost(): number {
+    return this.buttons / (this.buttonCost + this.timeCost);
+  }
 
-    profitPerTime(remainingIncomeTimes: RemainingIncomeTimes): number {
-        return this.profit(remainingIncomeTimes) / this.timeCost;
-    }
+  profitPerTime(remainingIncomeTimes: RemainingIncomeTimes): number {
+    return this.profit(remainingIncomeTimes) / this.timeCost;
+  }
 
-    evaluation(remainingIncomeTimes: RemainingIncomeTimes): number {
-        const buttonCostWeighting = buttonCostWeightings[remainingIncomeTimes];
-        return this.buttonPerCostZScore() * buttonCostWeighting + this.profitPerTimeZScore(remainingIncomeTimes) * (1 - buttonCostWeighting);
-    }
+  evaluation(remainingIncomeTimes: RemainingIncomeTimes): number {
+    const buttonCostWeighting = buttonCostWeightings[remainingIncomeTimes];
+    return (
+      this.buttonPerCostZScore() * buttonCostWeighting +
+      this.profitPerTimeZScore(remainingIncomeTimes) * (1 - buttonCostWeighting)
+    );
+  }
 
-    private buttonPerCostZScore(): number {
-        return this.calculateZScore(patch => patch.buttonsPerCost(), Patches);
-    }
+  private buttonPerCostZScore(): number {
+    return this.calculateZScore((patch) => patch.buttonsPerCost(), Patches);
+  }
 
-    private profitPerTimeZScore(remainingIncomeTimes: RemainingIncomeTimes): number {
-        return this.calculateZScore(patch => patch.profitPerTime(remainingIncomeTimes), Patches);
-    }
+  private profitPerTimeZScore(
+    remainingIncomeTimes: RemainingIncomeTimes,
+  ): number {
+    return this.calculateZScore(
+      (patch) => patch.profitPerTime(remainingIncomeTimes),
+      Patches,
+    );
+  }
 
-    private calculateZScore(valueFunction: (patch: Patch) => number, patches: Patch[]): number {
-        const mean = calculateAverage(valueFunction, patches);
-        const stdDev = calculateStandardDeviation(valueFunction, patches);
-        return (valueFunction(this) - mean) / stdDev;
-    }
+  private calculateZScore(
+    valueFunction: (patch: Patch) => number,
+    patches: Patch[],
+  ): number {
+    const mean = calculateAverage(valueFunction, patches);
+    const stdDev = calculateStandardDeviation(valueFunction, patches);
+    return (valueFunction(this) - mean) / stdDev;
+  }
 }
 
 const buttonCostWeightings: { [key in RemainingIncomeTimes]: number } = {
-    1: 0,
-    2: 0.0625,
-    3: 0.125,
-    4: 0.25,
-    5: 0.5,
-    6: 0.75,
-    7: 0.875,
-    8: 0.9375,
-    9: 0.96875,
+  1: 0,
+  2: 0.0625,
+  3: 0.125,
+  4: 0.25,
+  5: 0.5,
+  6: 0.75,
+  7: 0.875,
+  8: 0.9375,
+  9: 0.96875,
 };
 
 type PatchShape = [
-    [boolean, boolean, boolean, boolean, boolean],
-    [boolean, boolean, boolean, boolean, boolean],
-    [boolean, boolean, boolean, boolean, boolean]
+  [boolean, boolean, boolean, boolean, boolean],
+  [boolean, boolean, boolean, boolean, boolean],
+  [boolean, boolean, boolean, boolean, boolean],
 ];
 
 export type RemainingIncomeTimes = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9;
 
-export type SortType = 'evaluation' | 'profit';
+export type SortType = "evaluation" | "profit";
 
-export function sortPatchesByEvaluation(remainingIncomeTimes: RemainingIncomeTimes, patches: Patch[]): Patch[] {
-    return [...patches].sort((a, b) => {
-        return b.evaluation(remainingIncomeTimes) - a.evaluation(remainingIncomeTimes);
-    });
+export function sortPatchesByEvaluation(
+  remainingIncomeTimes: RemainingIncomeTimes,
+  patches: Patch[],
+): Patch[] {
+  return [...patches].sort((a, b) => {
+    return (
+      b.evaluation(remainingIncomeTimes) - a.evaluation(remainingIncomeTimes)
+    );
+  });
 }
 
-export function sortPatchesByProfit(remainingIncomeTimes: RemainingIncomeTimes, patches: Patch[]): Patch[] {
-    return [...patches].sort((a, b) => {
-        return b.profit(remainingIncomeTimes) - a.profit(remainingIncomeTimes);
-    });
+export function sortPatchesByProfit(
+  remainingIncomeTimes: RemainingIncomeTimes,
+  patches: Patch[],
+): Patch[] {
+  return [...patches].sort((a, b) => {
+    return b.profit(remainingIncomeTimes) - a.profit(remainingIncomeTimes);
+  });
 }
 
-function calculateAverage(valueFunction: (patch: Patch) => number, patches: Patch[]): number {
-    const sum = patches.reduce((sum, patch) => sum + valueFunction(patch), 0);
-    return sum / patches.length;
+function calculateAverage(
+  valueFunction: (patch: Patch) => number,
+  patches: Patch[],
+): number {
+  const sum = patches.reduce((sum, patch) => sum + valueFunction(patch), 0);
+  return sum / patches.length;
 }
 
-function calculateStandardDeviation(valueFunction: (patch: Patch) => number, patches: Patch[]): number {
-    const mean = calculateAverage(valueFunction, patches);
-    const variance = patches.reduce((sum, patch) => {
-        const value = valueFunction(patch);
-        return sum + Math.pow(value - mean, 2);
+function calculateStandardDeviation(
+  valueFunction: (patch: Patch) => number,
+  patches: Patch[],
+): number {
+  const mean = calculateAverage(valueFunction, patches);
+  const variance =
+    patches.reduce((sum, patch) => {
+      const value = valueFunction(patch);
+      return sum + (value - mean) ** 2;
     }, 0) / patches.length;
 
-    return Math.sqrt(variance);
+  return Math.sqrt(variance);
 }
 
 export const Patches: Patch[] = [
-    new Patch([
-        [true, false, false, false, false],
-        [true, true, true, true, false],
-        [false, false, false, true, false],
-    ], 1, 2, 0),
-    new Patch([
-        [false, true, false, false, false],
-        [true, true, true, true, false],
-        [false, false, true, false, false],
-    ], 2, 1, 0),
-    new Patch([
-        [true, true, true, true, true],
-        [false, false, false, false, false],
-        [false, false, false, false, false],
-    ], 7, 1, 1),
-    new Patch([
-        [true, false, false, false, false],
-        [true, true, true, true, false],
-        [true, false, false, false, false],
-    ], 7, 2, 2),
-    new Patch([
-        [false, true, true, false, false],
-        [true, true, true, true, false],
-        [false, true, true, false, false],
-    ], 5, 3, 1),
-    new Patch([
-        [false, true, false, false, false],
-        [true, true, true, true, false],
-        [false, true, false, false, false],
-    ], 0, 3, 1),
-    new Patch([
-        [true, true, false, false, false],
-        [false, true, true, false, false],
-        [false, false, false, false, false],
-    ], 3, 2, 1),
-    new Patch([
-        [false, false, true, false, false],
-        [true, true, true, true, true],
-        [false, false, true, false, false],
-    ], 1, 4, 1),
-    new Patch([
-        [true, true, true, false, false],
-        [true, false, true, false, false],
-        [false, false, false, false, false],
-    ], 1, 2, 0),
-    new Patch([
-        [true, true, true, false, false],
-        [true, false, false, false, false],
-        [false, false, false, false, false],
-    ], 4, 2, 1),
-    new Patch([
-        [true, true, true, false, false],
-        [false, false, true, true, false],
-        [false, false, false, false, false],
-    ], 2, 3, 1),
-    new Patch([
-        [true, true, true, false, false],
-        [false, true, false, false, false],
-        [true, true, true, false, false],
-    ], 2, 3, 0),
-    new Patch([
-        [true, true, true, false, false],
-        [true, true, false, false, false],
-        [false, false, false, false, false],
-    ], 2, 2, 0),
-    new Patch([
-        [true, true, true, false, false],
-        [false, true, true, true, false],
-        [false, false, false, false, false],
-    ], 4, 2, 0),
-    new Patch([
-        [false, true, false, false, false],
-        [true, true, true, false, false],
-        [false, true, false, false, false],
-    ], 5, 4, 2),
-    new Patch([
-        [true, true, true, true, false],
-        [false, true, true, false, false],
-        [false, false, false, false, false],
-    ], 7, 4, 2),
-    new Patch([
-        [true, true, false, false, false],
-        [false, true, true, false, false],
-        [false, false, true, false, false],
-    ], 10, 4, 3),
-    new Patch([
-        [true, true, true, true, false],
-        [true, true, false, false, false],
-        [false, false, false, false, false],
-    ], 10, 5, 3),
-    new Patch([
-        [true, true, true, true, false],
-        [false, false, false, false, false],
-        [false, false, false, false, false],
-    ], 3, 3, 1),
-    new Patch([
-        [true, true, true, true, false],
-        [true, false, false, false, false],
-        [false, false, false, false, false],
-    ], 10, 3, 2),
-    new Patch([
-        [true, true, true, true, false],
-        [true, false, false, true, false],
-        [false, false, false, false, false],
-    ], 1, 5, 1),
-    new Patch([
-        [true, false, true, false, false],
-        [true, true, true, false, false],
-        [false, true, false, false, false],
-    ], 3, 6, 2),
-    new Patch([
-        [true, true, false, false, false],
-        [true, true, true, false, false],
-        [false, false, true, false, false],
-    ], 8, 6, 3),
-    new Patch([
-        [true, true, true, false, false],
-        [false, true, false, false, false],
-        [false, true, false, false, false],
-    ], 5, 5, 2),
-    new Patch([
-        [true, true, true, true, false],
-        [false, true, false, false, false],
-        [false, false, false, false, false],
-    ], 3, 4, 1),
-    new Patch([
-        [true, true, true, false, false],
-        [false, true, false, false, false],
-        [false, false, false, false, false],
-    ], 2, 2, 0),
-    new Patch([
-        [true, true, false, false, false],
-        [true, false, false, false, false],
-        [false, false, false, false, false],
-    ], 3, 1, 0),
-    new Patch([
-        [true, true, false, false, false],
-        [false, true, true, false, false],
-        [false, false, false, false, false],
-    ], 7, 6, 3),
-    new Patch([
-        [true, true, false, false, false],
-        [true, true, false, false, false],
-        [false, false, false, false, false],
-    ], 6, 5, 2),
-    new Patch([
-        [true, true, true, false, false],
-        [true, false, false, false, false],
-        [false, false, false, false, false],
-    ], 4, 6, 2),
-    new Patch([
-        [true, true, true, false, false],
-        [false, false, false, false, false],
-        [false, false, false, false, false],
-    ], 2, 2, 0),
-    new Patch([
-        [true, true, false, false, false],
-        [false, false, false, false, false],
-        [false, false, false, false, false],
-    ], 2, 1, 0),
-    new Patch([
-        [true, true, false, false, false],
-        [true, false, false, false, false],
-        [false, false, false, false, false],
-    ], 1, 3, 0),
+  new Patch(
+    [
+      [true, false, false, false, false],
+      [true, true, true, true, false],
+      [false, false, false, true, false],
+    ],
+    1,
+    2,
+    0,
+  ),
+  new Patch(
+    [
+      [false, true, false, false, false],
+      [true, true, true, true, false],
+      [false, false, true, false, false],
+    ],
+    2,
+    1,
+    0,
+  ),
+  new Patch(
+    [
+      [true, true, true, true, true],
+      [false, false, false, false, false],
+      [false, false, false, false, false],
+    ],
+    7,
+    1,
+    1,
+  ),
+  new Patch(
+    [
+      [true, false, false, false, false],
+      [true, true, true, true, false],
+      [true, false, false, false, false],
+    ],
+    7,
+    2,
+    2,
+  ),
+  new Patch(
+    [
+      [false, true, true, false, false],
+      [true, true, true, true, false],
+      [false, true, true, false, false],
+    ],
+    5,
+    3,
+    1,
+  ),
+  new Patch(
+    [
+      [false, true, false, false, false],
+      [true, true, true, true, false],
+      [false, true, false, false, false],
+    ],
+    0,
+    3,
+    1,
+  ),
+  new Patch(
+    [
+      [true, true, false, false, false],
+      [false, true, true, false, false],
+      [false, false, false, false, false],
+    ],
+    3,
+    2,
+    1,
+  ),
+  new Patch(
+    [
+      [false, false, true, false, false],
+      [true, true, true, true, true],
+      [false, false, true, false, false],
+    ],
+    1,
+    4,
+    1,
+  ),
+  new Patch(
+    [
+      [true, true, true, false, false],
+      [true, false, true, false, false],
+      [false, false, false, false, false],
+    ],
+    1,
+    2,
+    0,
+  ),
+  new Patch(
+    [
+      [true, true, true, false, false],
+      [true, false, false, false, false],
+      [false, false, false, false, false],
+    ],
+    4,
+    2,
+    1,
+  ),
+  new Patch(
+    [
+      [true, true, true, false, false],
+      [false, false, true, true, false],
+      [false, false, false, false, false],
+    ],
+    2,
+    3,
+    1,
+  ),
+  new Patch(
+    [
+      [true, true, true, false, false],
+      [false, true, false, false, false],
+      [true, true, true, false, false],
+    ],
+    2,
+    3,
+    0,
+  ),
+  new Patch(
+    [
+      [true, true, true, false, false],
+      [true, true, false, false, false],
+      [false, false, false, false, false],
+    ],
+    2,
+    2,
+    0,
+  ),
+  new Patch(
+    [
+      [true, true, true, false, false],
+      [false, true, true, true, false],
+      [false, false, false, false, false],
+    ],
+    4,
+    2,
+    0,
+  ),
+  new Patch(
+    [
+      [false, true, false, false, false],
+      [true, true, true, false, false],
+      [false, true, false, false, false],
+    ],
+    5,
+    4,
+    2,
+  ),
+  new Patch(
+    [
+      [true, true, true, true, false],
+      [false, true, true, false, false],
+      [false, false, false, false, false],
+    ],
+    7,
+    4,
+    2,
+  ),
+  new Patch(
+    [
+      [true, true, false, false, false],
+      [false, true, true, false, false],
+      [false, false, true, false, false],
+    ],
+    10,
+    4,
+    3,
+  ),
+  new Patch(
+    [
+      [true, true, true, true, false],
+      [true, true, false, false, false],
+      [false, false, false, false, false],
+    ],
+    10,
+    5,
+    3,
+  ),
+  new Patch(
+    [
+      [true, true, true, true, false],
+      [false, false, false, false, false],
+      [false, false, false, false, false],
+    ],
+    3,
+    3,
+    1,
+  ),
+  new Patch(
+    [
+      [true, true, true, true, false],
+      [true, false, false, false, false],
+      [false, false, false, false, false],
+    ],
+    10,
+    3,
+    2,
+  ),
+  new Patch(
+    [
+      [true, true, true, true, false],
+      [true, false, false, true, false],
+      [false, false, false, false, false],
+    ],
+    1,
+    5,
+    1,
+  ),
+  new Patch(
+    [
+      [true, false, true, false, false],
+      [true, true, true, false, false],
+      [false, true, false, false, false],
+    ],
+    3,
+    6,
+    2,
+  ),
+  new Patch(
+    [
+      [true, true, false, false, false],
+      [true, true, true, false, false],
+      [false, false, true, false, false],
+    ],
+    8,
+    6,
+    3,
+  ),
+  new Patch(
+    [
+      [true, true, true, false, false],
+      [false, true, false, false, false],
+      [false, true, false, false, false],
+    ],
+    5,
+    5,
+    2,
+  ),
+  new Patch(
+    [
+      [true, true, true, true, false],
+      [false, true, false, false, false],
+      [false, false, false, false, false],
+    ],
+    3,
+    4,
+    1,
+  ),
+  new Patch(
+    [
+      [true, true, true, false, false],
+      [false, true, false, false, false],
+      [false, false, false, false, false],
+    ],
+    2,
+    2,
+    0,
+  ),
+  new Patch(
+    [
+      [true, true, false, false, false],
+      [true, false, false, false, false],
+      [false, false, false, false, false],
+    ],
+    3,
+    1,
+    0,
+  ),
+  new Patch(
+    [
+      [true, true, false, false, false],
+      [false, true, true, false, false],
+      [false, false, false, false, false],
+    ],
+    7,
+    6,
+    3,
+  ),
+  new Patch(
+    [
+      [true, true, false, false, false],
+      [true, true, false, false, false],
+      [false, false, false, false, false],
+    ],
+    6,
+    5,
+    2,
+  ),
+  new Patch(
+    [
+      [true, true, true, false, false],
+      [true, false, false, false, false],
+      [false, false, false, false, false],
+    ],
+    4,
+    6,
+    2,
+  ),
+  new Patch(
+    [
+      [true, true, true, false, false],
+      [false, false, false, false, false],
+      [false, false, false, false, false],
+    ],
+    2,
+    2,
+    0,
+  ),
+  new Patch(
+    [
+      [true, true, false, false, false],
+      [false, false, false, false, false],
+      [false, false, false, false, false],
+    ],
+    2,
+    1,
+    0,
+  ),
+  new Patch(
+    [
+      [true, true, false, false, false],
+      [true, false, false, false, false],
+      [false, false, false, false, false],
+    ],
+    1,
+    3,
+    0,
+  ),
 ];
