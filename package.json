@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "homepage": "https://patchwork.kumackey.com",
+  "packageManager": "pnpm@10.33.0",
   "dependencies": {
     "react": "^18.2.0",
     "react-app-polyfill": "^3.0.0",
@@ -47,6 +48,7 @@
     "babel-loader": "^8.2.3",
     "babel-plugin-named-asset-import": "^0.3.8",
     "babel-preset-react-app": "^10.0.1",
+    "camelcase": "^6.3.0",
     "eslint": "^8.3.0",
     "eslint-config-react-app": "^7.0.1",
     "jest": "^30.2.0",
@@ -58,10 +60,17 @@
     "typescript": "^4.9.5",
     "vite": "^6.4.2"
   },
-  "overrides": {
-    "nth-check": "2.1.1",
-    "@babel/plugin-transform-modules-systemjs": "^7.29.4",
-    "postcss": "^8.5.10"
+  "pnpm": {
+    "overrides": {
+      "nth-check": "2.1.1",
+      "@babel/plugin-transform-modules-systemjs": "^7.29.4",
+      "postcss": "^8.5.10"
+    },
+    "onlyBuiltDependencies": [
+      "core-js",
+      "esbuild",
+      "unrs-resolver"
+    ]
   },
   "jest": {
     "roots": [
