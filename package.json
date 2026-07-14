@@ -6,7 +6,6 @@
   "packageManager": "pnpm@10.33.0",
   "dependencies": {
     "react": "^18.2.0",
-    "react-app-polyfill": "^3.0.0",
     "react-dnd": "^16.0.1",
     "react-dnd-html5-backend": "^16.0.1",
     "react-dom": "^18.2.0"
@@ -15,7 +14,8 @@
     "start": "vite",
     "build": "tsc --noEmit && vite build",
     "preview": "vite preview",
-    "test": "jest",
+    "test": "vitest run",
+    "test:watch": "vitest",
     "lint": "biome lint",
     "format": "biome format --write",
     "check": "biome check --write"
@@ -33,82 +33,22 @@
     ]
   },
   "devDependencies": {
-    "@babel/core": "^7.16.0",
-    "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "@biomejs/biome": "2.5.3",
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.2",
-    "@types/jest": "^30.0.0",
     "@types/react": "^18.2.37",
     "@types/react-dom": "^18.2.15",
-    "babel-jest": "^30.2.0",
-    "babel-preset-react-app": "^10.0.1",
-    "camelcase": "^6.3.0",
-    "jest": "^30.2.0",
-    "jest-environment-jsdom": "^30.2.0",
+    "jsdom": "^29.1.1",
     "typescript": "^4.9.5",
-    "vite": "^8.1.4"
+    "vite": "^8.1.4",
+    "vitest": "^4.1.10"
   },
   "pnpm": {
     "overrides": {
-      "@babel/plugin-transform-modules-systemjs": "^7.29.4",
       "postcss": "^8.5.10"
     },
     "onlyBuiltDependencies": [
-      "core-js",
       "unrs-resolver"
-    ]
-  },
-  "jest": {
-    "roots": [
-      "<rootDir>/src"
-    ],
-    "collectCoverageFrom": [
-      "src/**/*.{js,jsx,ts,tsx}",
-      "!src/**/*.d.ts"
-    ],
-    "setupFiles": [
-      "react-app-polyfill/jsdom"
-    ],
-    "setupFilesAfterEnv": [
-      "<rootDir>/src/setupTests.ts"
-    ],
-    "testMatch": [
-      "<rootDir>/src/**/__tests__/**/*.{js,jsx,ts,tsx}",
-      "<rootDir>/src/**/*.{spec,test}.{js,jsx,ts,tsx}"
-    ],
-    "testEnvironment": "jsdom",
-    "transform": {
-      "^.+\\.(js|jsx|mjs|cjs|ts|tsx)$": "<rootDir>/config/jest/babelTransform.js",
-      "^.+\\.css$": "<rootDir>/config/jest/cssTransform.js",
-      "^(?!.*\\.(js|jsx|mjs|cjs|ts|tsx|css|json)$)": "<rootDir>/config/jest/fileTransform.js"
-    },
-    "transformIgnorePatterns": [
-      "[/\\\\]node_modules[/\\\\].+\\.(js|jsx|mjs|cjs|ts|tsx)$",
-      "^.+\\.module\\.(css|sass|scss)$"
-    ],
-    "modulePaths": [],
-    "moduleNameMapper": {
-      "^react-native$": "react-native-web",
-      "^.+\\.module\\.(css|sass|scss)$": "identity-obj-proxy"
-    },
-    "moduleFileExtensions": [
-      "web.js",
-      "js",
-      "web.ts",
-      "ts",
-      "web.tsx",
-      "tsx",
-      "json",
-      "web.jsx",
-      "jsx",
-      "node"
-    ],
-    "resetMocks": true
-  },
-  "babel": {
-    "presets": [
-      "react-app"
     ]
   }
 }
